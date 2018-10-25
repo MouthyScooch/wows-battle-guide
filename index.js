@@ -15,5 +15,5 @@ app.get(['/*'], function (req, res) {
 
 var port = process.env.PORT || 3001;
 app.listen(port, function () {
-  console.log('node express frontend up on port' + port);
+  console.log('node express frontend up on port ' + port);
 });
