@@ -32,6 +32,8 @@ Development set up:(on dev branch)
 
 Production set up:(on prod branch)
 
+-merge in develop branch
+
 -make sure "/build" is not in ".gitignore"
 
 -$ npm run build
