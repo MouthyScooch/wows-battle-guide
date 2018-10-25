@@ -13,7 +13,7 @@ class App extends Component {
           <Title />
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            AB or BC?... How to know you're in low tier.
+            AB or BC?... How to know you're in low tier
           </p>
 
         </header>
