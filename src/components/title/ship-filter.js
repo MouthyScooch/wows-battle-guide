@@ -3,30 +3,31 @@ import React from 'react';
 import {
   Button,
   ButtonGroup,
-  Container,
   Row,
-  Col,
-  Tooltip } from 'reactstrap';
+  Col } from 'reactstrap';
 
 export default class ShipFilter extends React.Component {
   constructor (props) {
     super(props);
 
 
-
     this.state = {
       shipFilter: {},
-      shipList: [
-        {nation: "IJN", tier: "X"},
-        {nation: "USN", tier: "IX", torps: "2"}
-      ]
+      shipList: this.props.shipList
     }
   }
 
+  // Generate button groups based on available ship parameters, incase they add more nations, tiers, classes, etc
   buildButtonGrp(type) {
+    let arr = [];
     return (
       this.state.shipList.map(
-        ship => <Button key={ship[type] + "shipListFilter"}>{ship[type]}</Button>
+        ship => {
+          if (!arr.includes(ship[type])) {
+            arr.push(ship[type]);
+            return <Button key={ship[type] + "shipListFilter"}>{ship[type]}</Button>
+          }
+        }
       )
     )
 
@@ -43,6 +44,20 @@ export default class ShipFilter extends React.Component {
         <Row>
         <Col>
           <ButtonGroup>
+            {this.buildButtonGrp("tier")}
+          </ButtonGroup>
+          </Col>
+        </Row>
+        <Row>
+        <Col>
+          <ButtonGroup>
+            {this.buildButtonGrp("class")}
+          </ButtonGroup>
+          </Col>
+        </Row>
+        <Row>
+        <Col>
+          <ButtonGroup>
             {this.buildButtonGrp("nation")}
           </ButtonGroup>
           </Col>
@@ -50,7 +65,7 @@ export default class ShipFilter extends React.Component {
         <Row>
         <Col>
           <ButtonGroup>
-            {this.buildButtonGrp("tier")}
+            {this.buildButtonGrp("quality")}
           </ButtonGroup>
           </Col>
         </Row>
