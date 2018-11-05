@@ -1,7 +1,10 @@
 // let's just build a small server to test the PWA serviceWorker functionality in prod
 var express = require('express');
+var axios = require('axios');
 
 var app = express();
+
+require('dotenv').config();
 
 app.use(express.static('build'));
 
@@ -13,10 +16,18 @@ app.get(['/'], function (req, res) {
 
 // data routes
 app.get('/ships', function (req, res) {
-  let ship = {ship: "ships"};
-  let shipjson = JSON.stringify(ship);
-
-  res.send(shipjson);
+  console.log("get ships pinged");
+  axios.get('https://api.worldofwarships.com/wows/encyclopedia/ships/?application_id=' + process.env.REACT_APP_WG_KEY)
+    .then(function(response) {
+      console.log("WG response", response);
+      return response;
+    })
+    .then(function(myJson) {
+      res.send(myJson.data.data);
+    })
+    .catch(function(err) {
+      console.log('Fetch Error :-S', err);
+    });
 });
 
 // catch all
