@@ -63,7 +63,7 @@ export default class Title extends React.Component {
         filteredShips: this.state.shipList
       });
     } else if (this.state) {
-      let filteredShips = this.state.shipList.filter(ship => ship[type] === value);
+      let filteredShips = this.state.shipList.filter(ship => ship[type].toString() === value);
       this.setState({
         filteredShips: filteredShips
       });
