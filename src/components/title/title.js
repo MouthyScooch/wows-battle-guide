@@ -35,9 +35,15 @@ export default class Title extends React.Component {
         { tier: 1, class: "CA", nation: "USN", quality: "silver", name: "Erie" },
         { tier: 9, class: "DD", nation: "USN", quality: "gold", name: "Black" },
       ],
-      shipFilter: {}
+      shipFilter: {},
+      filteredShips: []
     }
     // this.fetchShips();
+    this.filterShips = this.filterShips.bind(this);
+  }
+
+  componentWillMount() {
+    this.filterShips("prefill");
   }
 
   // fetchShips() {
@@ -52,14 +58,30 @@ export default class Title extends React.Component {
   //
   // }
 
+  filterShips(type, value) {
+    if (type === "prefill") {
+      this.setState({
+        filteredShips: this.state.shipList
+      });
+    } else if (this.state) {
+      let filteredShips = this.state.shipList.filter(ship => ship[type] === value);
+      this.setState({
+        filteredShips: filteredShips
+      });
+    } else {
+      console.log("filter error");
+    }
+
+  }
+
   render() {
     return (
       <div>
       <div className="content">
 
               Wows Battle Field Guide
-                <ShipFilter shipList={this.state.shipList}/>
-                <ShipList shipList={this.state.shipList}/>
+                <ShipFilter shipList={this.state.filteredShips} filterShips={this.filterShips}/>
+                <ShipList shipList={this.state.filteredShips} filterShips={this.filterShips}/>
                 <ShipSearch />
                 <ShipSpin/>
 

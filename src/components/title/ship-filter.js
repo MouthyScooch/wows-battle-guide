@@ -12,9 +12,10 @@ export default class ShipFilter extends React.Component {
 
 
     this.state = {
-      shipFilter: {},
       shipList: this.props.shipList
     }
+
+    this.handleFilterChange = this.handleFilterChange.bind(this)
   }
 
   // Generate button groups based on available ship parameters, incase they add more nations, tiers, classes, etc
@@ -25,12 +26,22 @@ export default class ShipFilter extends React.Component {
         ship => {
           if (!arr.includes(ship[type])) {
             arr.push(ship[type]);
-            return <Button key={ship[type] + "shipListFilter"}>{ship[type]}</Button>
+            return (
+              <Button
+              key={ship.name + "shipListFilter"}
+              onClick={this.handleFilterChange}
+              value={type}>
+                {ship[type]}
+              </Button>
+            )
           }
         }
       )
     )
+  }
 
+  handleFilterChange(event) {
+    this.props.filterShips(event.target.value, event.target.innerHTML);
   }
 
   render() {
