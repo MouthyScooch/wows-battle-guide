@@ -37,7 +37,7 @@ export default class ShipList extends React.Component {
               </thead>
               <tbody>
               {
-                this.state.shipList.map(
+                this.props.shipList.map(
                   function (ship) {
 
                     return(

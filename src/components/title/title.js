@@ -35,7 +35,6 @@ export default class Title extends React.Component {
         { tier: 1, class: "CA", nation: "USN", quality: "silver", name: "Erie" },
         { tier: 9, class: "DD", nation: "USN", quality: "gold", name: "Black" },
       ],
-      shipFilter: {},
       filteredShips: []
     }
     // this.fetchShips();
