@@ -37,7 +37,7 @@ export default class Title extends React.Component {
       ],
       filteredShips: []
     }
-    // this.fetchShips();
+    this.fetchShips();
     this.filterShips = this.filterShips.bind(this);
   }
 
@@ -45,17 +45,19 @@ export default class Title extends React.Component {
     this.filterShips("prefill");
   }
 
-  // fetchShips() {
-  //   fetch('../devSamples/sampleShips.json')
-  //   .then(function(response) {
-  //     var gg = response.json();
-  //     console.log("response.json()", gg);
-  //   })
-  //   .then(function(myJson) {
-  //     console.log(JSON.stringify(myJson));
-  //   });
-  //
-  // }
+  fetchShips() {
+    fetch('/ships')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      console.log(JSON.stringify(myJson));
+    })
+    .catch(function(err) {
+    console.log('Fetch Error :-S', err);
+  })
+
+  }
 
   filterShips(type, value) {
     if (type === "prefill") {
