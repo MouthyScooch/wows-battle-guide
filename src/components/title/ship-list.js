@@ -37,6 +37,8 @@ export default class ShipList extends React.Component {
               </thead>
               <tbody>
               {
+                // tool tip of the ships description from WG to be added
+                // click handler to be added, linked to main site
                 this.props.shipList.map(
                   function (ship) {
 
