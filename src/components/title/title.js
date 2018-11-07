@@ -17,23 +17,23 @@ export default class Title extends React.Component {
     this.state = {
       selectedShip: "",
       shipList: [
-        { tier: 10, class: "BB", nation: "IJN", quality: "silver", name: "Yamato" },
-        { tier: 10, class: "BB", nation: "USN", quality: "silver", name: "Montana" },
-        { tier: 10, class: "CA", nation: "IJN", quality: "silver", name: "Zao" },
-        { tier: 10, class: "CA", nation: "USN", quality: "silver", name: "Des Moines" },
-        { tier: 10, class: "DD", nation: "IJN", quality: "silver", name: "Shimakaze" },
-        { tier: 10, class: "DD", nation: "USN", quality: "silver", name: "Gearing" },
-        { tier: 10, class: "CV", nation: "USN", quality: "silver", name: "Midway" },
-        { tier: 9, class: "CA", nation: "USN", quality: "silver", name: "Buffalo" },
-        { tier: 8, class: "CA", nation: "USN", quality: "silver", name: "Baltimore" },
-        { tier: 7, class: "CA", nation: "USN", quality: "silver", name: "New Orleans" },
-        { tier: 6, class: "CA", nation: "USN", quality: "silver", name: "Pensacola" },
-        { tier: 5, class: "CA", nation: "USN", quality: "silver", name: "Omaha" },
-        { tier: 4, class: "CA", nation: "USN", quality: "silver", name: "Phenoix" },
-        { tier: 3, class: "CA", nation: "USN", quality: "silver", name: "t3usncl" },
-        { tier: 2, class: "CA", nation: "USN", quality: "silver", name: "t2usncl" },
-        { tier: 1, class: "CA", nation: "USN", quality: "silver", name: "Erie" },
-        { tier: 9, class: "DD", nation: "USN", quality: "gold", name: "Black" },
+        { tier: 10, type: "BB", nation: "IJN", is_premium: "silver", name: "Yamato" },
+        { tier: 10, type: "BB", nation: "USN", is_premium: "silver", name: "Montana" },
+        { tier: 10, type: "CA", nation: "IJN", is_premium: "silver", name: "Zao" },
+        { tier: 10, type: "CA", nation: "USN", is_premium: "silver", name: "Des Moines" },
+        { tier: 10, type: "DD", nation: "IJN", is_premium: "silver", name: "Shimakaze" },
+        { tier: 10, type: "DD", nation: "USN", is_premium: "silver", name: "Gearing" },
+        { tier: 10, type: "CV", nation: "USN", is_premium: "silver", name: "Midway" },
+        { tier: 9, type: "CA", nation: "USN", is_premium: "silver", name: "Buffalo" },
+        { tier: 8, type: "CA", nation: "USN", is_premium: "silver", name: "Baltimore" },
+        { tier: 7, type: "CA", nation: "USN", is_premium: "silver", name: "New Orleans" },
+        { tier: 6, type: "CA", nation: "USN", is_premium: "silver", name: "Pensacola" },
+        { tier: 5, type: "CA", nation: "USN", is_premium: "silver", name: "Omaha" },
+        { tier: 4, type: "CA", nation: "USN", is_premium: "silver", name: "Phenoix" },
+        { tier: 3, type: "CA", nation: "USN", is_premium: "silver", name: "t3usncl" },
+        { tier: 2, type: "CA", nation: "USN", is_premium: "silver", name: "t2usncl" },
+        { tier: 1, type: "CA", nation: "USN", is_premium: "silver", name: "Erie" },
+        { tier: 9, type: "DD", nation: "USN", is_premium: "gold", name: "Black" },
       ],
       filteredShips: [],
       ships: {},
@@ -54,9 +54,10 @@ export default class Title extends React.Component {
     })
     .then((resJson) => {
       console.log("fetchShips response", resJson);
-      // this.setState({
-      //   shipList: resJson
-      // })
+      this.setState({
+        shipList: resJson
+      });
+      this.filterShips("prefill");
     })
     .then((resJson) => {
       console.log("after final setState shipsData", this.state.shipList);
@@ -89,7 +90,7 @@ export default class Title extends React.Component {
       <div className="content">
 
               Wows Battle Field Guide
-                <ShipFilter shipList={this.state.filteredShips} filterShips={this.filterShips} />
+                <ShipFilter shipList={this.state.shipList} filterShips={this.filterShips} />
                 <ShipList shipList={this.state.filteredShips} filterShips={this.filterShips} />
                 <ShipSearch />
                 <ShipSpin />

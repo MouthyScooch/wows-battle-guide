@@ -22,8 +22,11 @@ export default class ShipFilter extends React.Component {
   buildButtonGrp(type) {
     let arr = [];
     return (
-      this.state.shipList.map(
+      this.props.shipList.map(
         ship => {
+          if ((typeof ship[type]) != "string") {
+            ship[type] = ship[type].toString();
+          };
           if (!arr.includes(ship[type])) {
             arr.push(ship[type]);
             return (
@@ -74,7 +77,7 @@ export default class ShipFilter extends React.Component {
             value={"prefill"}>
               {0}
             </Button>
-            {this.buildButtonGrp("class")}
+            {this.buildButtonGrp("type")}
           </ButtonGroup>
           </Col>
         </Row>
@@ -100,7 +103,8 @@ export default class ShipFilter extends React.Component {
             value={"prefill"}>
               {0}
             </Button>
-            {this.buildButtonGrp("quality")}
+            is premium
+            {this.buildButtonGrp("is_premium")}
           </ButtonGroup>
           </Col>
         </Row>
