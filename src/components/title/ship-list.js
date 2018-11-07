@@ -32,7 +32,7 @@ export default class ShipList extends React.Component {
                   <th>Name</th>
                   <th>Class</th>
                   <th>Nation</th>
-                  <th>Quality</th>
+                  <th>is_premium</th>
                 </tr>
               </thead>
               <tbody>
@@ -44,9 +44,9 @@ export default class ShipList extends React.Component {
                       <tr key={ship.name + "shipTable"}>
                         <th scope='row'>{ship.tier}</th>
                         <td>{ship.name}</td>
-                        <td>{ship.class}</td>
+                        <td>{ship.type}</td>
                         <td>{ship.nation}</td>
-                        <td>{ship.quality}</td>
+                        <td>{ship.is_premium}</td>
                       </tr>
                     )
                   }
