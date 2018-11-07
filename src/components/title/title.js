@@ -41,7 +41,6 @@ export default class Title extends React.Component {
     }
     this.fetchShips();
     this.filterShips = this.filterShips.bind(this);
-    this.filterShips = this.filterShips.bind(this);
   }
 
   componentWillMount() {
@@ -53,17 +52,17 @@ export default class Title extends React.Component {
     .then((response) => {
       return response.json();
     })
-    .then((myJson) => {
-      console.log("fetchShips response", myJson);
-      this.setState({
-        ships: myJson
-      })
+    .then((resJson) => {
+      console.log("fetchShips response", resJson);
+      // this.setState({
+      //   shipList: resJson
+      // })
     })
-    .then(() => {
-      console.log("setState", this.state.ships);
+    .then((resJson) => {
+      console.log("after final setState shipsData", this.state.shipList);
     })
     .catch((err) => {
-      console.log("shipppsss", this.state.ships);
+      console.log("state.ships after error", this.state.ships);
       console.log('Fetch Error :-S', err);
     })
   }

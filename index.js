@@ -19,72 +19,54 @@ app.get(['/'], function (req, res) {
 app.get('/api/ships', function (req, res) {
   console.log("get ships pinged");
   let shipStore = [];
+  let pageCount = 1;
 
   axios.get('https://api.worldofwarships.com/wows/encyclopedia/ships/?application_id=' + process.env.REACT_APP_WG_KEY + '&page_no=1')
-    .then(function(response) {
-      // console.log("WG response", response.data);
-      return response;
-    })
-    .then(function(myJson) {
-      console.log("myJson", myJson, "myJson");
-      function convertObjectToList(myJson) {
-          return Object.keys(myJson).map(function(k) {
-            return [k, myJson[k]]
-          });
-// working to convert four sets of objects of objects to one big array of objects for response to front end
+    .then((resJson) => {
+      function convertObjectToArray(resJsonData) {
+        return Object.keys(resJsonData).map(function(k) {
+          return resJsonData[k]
+        });
       }
-      let resObj = convertObjectToList(myJson.data.data);
-      console.log("resObj", resObj, "resObj");
-
-      res.send(resObj);
+      return convertObjectToArray(resJson.data.data);
+    }).then((shipList) => {
+      shipStore = shipStore.concat(shipList);
+      if (shipList.length < 100) {
+        console.log("sending ships");
+        res.send(shipStore);
+      } else {
+        pageCount++;
+        getNextPage(pageCount);
+      }
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.log('Fetch Error :-S', err);
     });
+    // refactor to pick up data from dedicated DB, GET WG API data and transpose to dedicated DB
+    function getNextPage(n) {
+      axios.get('https://api.worldofwarships.com/wows/encyclopedia/ships/?application_id=' + process.env.REACT_APP_WG_KEY + '&page_no=' + n)
+        .then((resJson) => {
+          function convertObjectToArray(resJsonData) {
+            return Object.keys(resJsonData).map(function(k) {
+              return resJsonData[k]
+            });
+          }
+          return convertObjectToArray(resJson.data.data);
+        }).then((shipList) => {
+          shipStore = shipStore.concat(shipList);
+          if (shipList.length < 100) {
+            console.log("sending ships");
+            res.send(shipStore);
+          } else {
+            pageCount++;
+            getNextPage(pageCount);
+          }
+        })
+        .catch((err) => {
+          console.log('Fetch Error :-S', err);
+        });
+    }
 });
-
-
-// function getAllShips() {
-//   axios.get('https://api.worldofwarships.com/wows/encyclopedia/ships/?application_id=' + process.env.REACT_APP_WG_KEY + '&page_no=' + n)
-//     .then(function(response) {
-//       if (!response.error) {
-//         allShips = Object.assign({}, response.data);
-//         console.log("allShips", allShips, "allShips");
-//         getAllShips();
-//       } else {
-//         res.send(allShips);
-//       }
-//     })
-//     .catch(function(err) {
-//       console.log('Fetch Error :-S', err);
-//     });
-// }
-// var shipPageCount = 1;
-// var allShips = {};
-// app.get('/ships', function (req, res) {
-//   //i want all the Ships
-//   //have to ping their server an unspecified number of times
-//   //break iteration on error response?
-//   axios.get(url + '&page_no=' + '1'))
-//   .then(function (response) {
-//     // handle success
-//     // allShips = Object.assign({}, response.data.data);
-//     console.log(response.data.data[3760142160], "response.data.data");
-//     shipPageCount++;
-//
-//   })
-//   .then(
-//     axios.get('/ships')
-//   )
-//   .catch(function (error) {
-//     // handle error
-//     res.send(allShips);
-//     console.log(error);
-//   })
-//   .then(function () {
-//     // always executed
-//   });
-// });
 
 // catch all
 app.get(['/*'], function (req, res) {
