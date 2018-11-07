@@ -35,9 +35,12 @@ export default class Title extends React.Component {
         { tier: 1, class: "CA", nation: "USN", quality: "silver", name: "Erie" },
         { tier: 9, class: "DD", nation: "USN", quality: "gold", name: "Black" },
       ],
-      filteredShips: []
+      filteredShips: [],
+      ships: {},
+      pgCount: 1
     }
     this.fetchShips();
+    this.filterShips = this.filterShips.bind(this);
     this.filterShips = this.filterShips.bind(this);
   }
 
@@ -46,17 +49,23 @@ export default class Title extends React.Component {
   }
 
   fetchShips() {
-    fetch('/ships')
-    .then(function(response) {
+    fetch('/api/ships')
+    .then((response) => {
       return response.json();
     })
-    .then(function(myJson) {
-      console.log(JSON.stringify(myJson));
+    .then((myJson) => {
+      console.log("fetchShips response", myJson);
+      this.setState({
+        ships: myJson
+      })
     })
-    .catch(function(err) {
-    console.log('Fetch Error :-S', err);
-  })
-
+    .then(() => {
+      console.log("setState", this.state.ships);
+    })
+    .catch((err) => {
+      console.log("shipppsss", this.state.ships);
+      console.log('Fetch Error :-S', err);
+    })
   }
 
   filterShips(type, value) {
@@ -81,10 +90,10 @@ export default class Title extends React.Component {
       <div className="content">
 
               Wows Battle Field Guide
-                <ShipFilter shipList={this.state.filteredShips} filterShips={this.filterShips}/>
-                <ShipList shipList={this.state.filteredShips} filterShips={this.filterShips}/>
+                <ShipFilter shipList={this.state.filteredShips} filterShips={this.filterShips} />
+                <ShipList shipList={this.state.filteredShips} filterShips={this.filterShips} />
                 <ShipSearch />
-                <ShipSpin/>
+                <ShipSpin />
 
         </div>
       </div>
