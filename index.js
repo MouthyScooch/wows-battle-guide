@@ -1,4 +1,5 @@
 // let's just build a small server to test the PWA serviceWorker functionality in prod
+// this whole file/server struture will be refactored when data begins to get more complex and with graphQL
 var express = require('express');
 var axios = require('axios');
 
