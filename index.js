@@ -21,19 +21,20 @@ app.get(['/'], function (req, res) {
 
 
 // data routes
-app.get('/api/shipss', function (req, res) {
+app.get('/api/ships', function (req, res) {
+  console.log("get ships from mongo db");
   db
     .find({})
-    .exec(function(err, ship){
-      if (err || !ship || !ship.length) {
+    .exec(function(err, ships){
+      if (err || !ships || !ships.length) {
         return res.status(404).send({message: 'Ships not found.'});
       }
-      res.send(ship);
+      res.send(ships);
     });
 });
 
 
-app.get('/api/ships', function (req, res) {
+app.get('/api/updateShips', function (req, res) {
   console.log("get ships pinged");
   let shipStore = [];
   let pageCount = 1;
