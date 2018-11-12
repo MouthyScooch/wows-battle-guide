@@ -24,9 +24,6 @@ export default class ShipFilter extends React.Component {
     return (
       this.props.shipList.map(
         ship => {
-          if ((typeof ship[type]) != "string") {
-            ship[type] = ship[type].toString();
-          };
           if (!arr.includes(ship[type])) {
             arr.push(ship[type]);
             return (
@@ -34,7 +31,7 @@ export default class ShipFilter extends React.Component {
               key={ship.name + "shipListFilter"}
               onClick={this.handleFilterChange}
               value={type}>
-                {ship[type]}
+                {ship[type].toString()}
               </Button>
             )
           }
