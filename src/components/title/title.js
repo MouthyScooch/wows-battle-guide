@@ -35,9 +35,7 @@ export default class Title extends React.Component {
         { tier: 1, type: "CA", nation: "USN", is_premium: "silver", name: "Erie" },
         { tier: 9, type: "DD", nation: "USN", is_premium: "gold", name: "Black" },
       ],
-      filteredShips: [],
-      ships: {},
-      pgCount: 1
+      filteredShips: []
     }
     this.fetchShips();
     this.filterShips = this.filterShips.bind(this);
@@ -63,12 +61,12 @@ export default class Title extends React.Component {
       console.log("after final setState shipsData", this.state.shipList);
     })
     .catch((err) => {
-      console.log("state.ships after error", this.state.ships);
       console.log('Fetch Error :-S', err);
     })
   }
 
   filterShips(type, value) {
+    console.log(type, value);
     if (type === "prefill") {
       this.setState({
         filteredShips: this.state.shipList
