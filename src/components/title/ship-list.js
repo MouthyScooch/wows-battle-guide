@@ -48,7 +48,7 @@ export default class ShipList extends React.Component {
                         <td>{ship.name}</td>
                         <td>{ship.type}</td>
                         <td>{ship.nation}</td>
-                        <td>{ship.is_premium}</td>
+                        <td>{ship.is_premium.toString()}</td>
                       </tr>
                     )
                   }

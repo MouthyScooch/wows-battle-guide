@@ -12,7 +12,8 @@ export default class ShipFilter extends React.Component {
 
 
     this.state = {
-      shipList: this.props.shipList
+      shipList: this.props.shipList,
+      filterArr: []
     }
 
     this.handleFilterChange = this.handleFilterChange.bind(this)
@@ -21,30 +22,52 @@ export default class ShipFilter extends React.Component {
   // Generate button groups based on available ship parameters, incase they add more nations, tiers, classes, etc
   buildButtonGrp(type) {
     let arr = [];
+    this.props.shipList.map(
+      ship => {
+        if (!arr.includes(ship[type])) {
+          arr.push(ship[type]);
+        }
+      }
+    )
+    if (typeof arr[0] == "number") {
+      arr = arr.sort((a, b) => a - b);
+    } else {
+      arr = arr.sort();
+    }
     return (
-      this.props.shipList.map(
+      arr.map(
         ship => {
-          if ((typeof ship[type]) != "string") {
-            ship[type] = ship[type].toString();
-          };
-          if (!arr.includes(ship[type])) {
-            arr.push(ship[type]);
-            return (
-              <Button
-              key={ship.name + "shipListFilter"}
-              onClick={this.handleFilterChange}
-              value={type}>
-                {ship[type]}
-              </Button>
-            )
-          }
+          return (
+            <Button
+            key={ship + "shipListFilter"}
+            onClick={(e) => this.handleFilterChange(e, ship)}
+            active={this.state.ship === ship}
+            value={type}>
+              {ship.toString()}
+            </Button>
+          )
         }
       )
     )
   }
 
-  handleFilterChange(event) {
-    this.props.filterShips(event.target.value, event.target.innerHTML);
+  handleFilterChange(event, ship) {
+    event.preventDefault();
+    this.setState({ ship });
+    let shipTypeValue = event.target.value;
+    if (!this.state.filterArr.includes(shipTypeValue)) {
+      let arr = this.state.filterArr;
+      arr.push(shipTypeValue);
+      this.setState({
+        filterArr: arr
+      });
+      this.props.filterShips(shipTypeValue, ship.toString());
+    }
+    if (shipTypeValue === "prefill") {
+      this.setState({
+        filterArr: []
+      });
+    }
   }
 
   render() {
@@ -56,56 +79,56 @@ export default class ShipFilter extends React.Component {
           </Col>
         </Row>
         <Row>
-        <Col>
-          <ButtonGroup>
-            <Button
-            key={"0tiershipListFilter"}
-            onClick={this.handleFilterChange}
-            value={"prefill"}>
-              {0}
-            </Button>
-            {this.buildButtonGrp("tier")}
-          </ButtonGroup>
+          <Col>
+            <ButtonGroup>
+              <Button
+              key={"0tiershipListFilter"}
+              onClick={(e) => this.handleFilterChange(e, "prefill")}
+              value={"prefill"}>
+                {0}
+              </Button>
+              {this.buildButtonGrp("tier")}
+            </ButtonGroup>
           </Col>
         </Row>
         <Row>
-        <Col>
-          <ButtonGroup>
-            <Button
-            key={"0classshipListFilter"}
-            onClick={this.handleFilterChange}
-            value={"prefill"}>
-              {0}
-            </Button>
-            {this.buildButtonGrp("type")}
-          </ButtonGroup>
+          <Col>
+            <ButtonGroup>
+              <Button
+              key={"0classshipListFilter"}
+              onClick={(e) => this.handleFilterChange(e, "prefill")}
+              value={"prefill"}>
+                {0}
+              </Button>
+              {this.buildButtonGrp("type")}
+            </ButtonGroup>
           </Col>
         </Row>
         <Row>
-        <Col>
-          <ButtonGroup>
-            <Button
-            key={"0nationshipListFilter"}
-            onClick={this.handleFilterChange}
-            value={"prefill"}>
-              {0}
-            </Button>
-            {this.buildButtonGrp("nation")}
-          </ButtonGroup>
+          <Col>
+            <ButtonGroup>
+              <Button
+              key={"0nationshipListFilter"}
+              onClick={(e) => this.handleFilterChange(e, "prefill")}
+              value={"prefill"}>
+                {0}
+              </Button>
+              {this.buildButtonGrp("nation")}
+            </ButtonGroup>
           </Col>
         </Row>
         <Row>
-        <Col>
-          <ButtonGroup>
-            <Button
-            key={"0qualityshipListFilter"}
-            onClick={this.handleFilterChange}
-            value={"prefill"}>
-              {0}
-            </Button>
-            is premium
-            {this.buildButtonGrp("is_premium")}
-          </ButtonGroup>
+          <Col>
+            <ButtonGroup>
+              <Button
+              key={"0qualityshipListFilter"}
+              onClick={(e) => this.handleFilterChange(e, "prefill")}
+              value={"prefill"}>
+                {0}
+              </Button>
+              is premium
+              {this.buildButtonGrp("is_premium")}
+            </ButtonGroup>
           </Col>
         </Row>
       </div>
