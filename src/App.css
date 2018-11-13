@@ -22,6 +22,67 @@
   color: #61dafb;
 }
 
+/* #app button.toggle:active {
+  color: red;
+} */
+
+/* .btn.btn-secondary {
+  background-color: orange
+}
+
+.btn.btn-secondary:active,
+.btn.btn-secondary:hover,
+.btn.btn-secondary:focus {
+  background-color: orange !important;
+}
+
+
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show > .btn-secondary.dropdown-toggle {
+  background-color: orange;
+} */
+
+/* .btn.btn-secondary {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+}
+.btn.btn-secondary.focus,
+.btn.btn-secondary:focus {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+  outline: none;
+  box-shadow: none;
+}
+.btn.btn-secondary:hover {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+  outline: none;
+  box-shadow: none;
+}
+.btn.btn-secondary.active,
+.btn.btn-secondary:active {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+  outline: none;
+} */
+.btn.btn-secondary.active.focus,
+.btn.btn-secondary.active:focus,
+.btn.btn-secondary.active:hover,
+.btn.btn-secondary:active.focus,
+.btn.btn-secondary:active:focus,
+.btn.btn-secondary:active:hover {
+  color: red;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+  outline: none;
+  box-shadow: none;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
