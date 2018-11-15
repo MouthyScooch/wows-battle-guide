@@ -39,6 +39,8 @@ export default class Title extends React.Component {
     }
     this.fetchShips();
     this.filterShips = this.filterShips.bind(this);
+    this.filterShipss = this.filterShipss.bind(this);
+    this.shipsFilter = this.shipsFilter.bind(this);
   }
 
   componentWillMount() {
@@ -54,8 +56,9 @@ export default class Title extends React.Component {
       console.log("fetchShips response", resJson);
       this.setState({
         shipList: resJson
+      }, () => {
+        this.filterShips("prefill");
       });
-      this.filterShips("prefill");
     })
     .then((resJson) => {
       console.log("after final setState shipsData", this.state.shipList);
@@ -79,6 +82,75 @@ export default class Title extends React.Component {
     } else {
       console.log("filter error");
     }
+  }
+
+  filterrShips(filter) {
+    console.log("filter", filter);
+    if (filter.prefill === "prefill") {
+      this.setState({
+        filteredShips: this.state.shipList
+      });
+    } else if (this.state) {
+      // big ship list
+      // filters
+      // iterate each ship by filter, or filter out ship list by filter? forEach shiplist or forEach filterObj?
+      //
+      // this.setState({
+      //
+      // }, );
+      // this.setState({
+      //   filteredShips: filteredShips
+      // });
+    } else {
+      console.log("filter error");
+    }
+  }
+
+  filterShipss(filter) {
+    console.log(filter);
+    this.setState({
+      filteredShips: this.state.shipList
+    });
+    this.shipsFilter(filter)
+  }
+
+  shipsFilter(filter) {
+    console.log(filter);
+    if (filter.prefill === "prefill") {
+      this.setState({
+        filteredShips: this.state.shipList
+      });
+    // } else if (this.state) {
+    } else if (this.state) {
+      let filtering = () => {
+        for (let key in filter) {
+          // @TODO run nested iterations for filter {} and shipList or pass type and will still have to... gotta finish filter
+          // need to get bb to switch to cl without changing the other tiers nations etc
+        }
+      }
+      let filteredShips = this.state.shipList.filter((ship) => {
+          for (let filterKey in filter) {
+            console.log("object iteration", filterKey, filter[filterKey]);
+
+
+            // return ship[filterKey] === filter[filterKey];
+          }
+        });
+        this.setState({
+          filteredShips: filteredShips
+        });
+
+      // let filteredShips = this.state.filteredShips.filter((ship) => {
+      //     filter.;
+      //     return ship[type].toString() === filter;
+      //   }
+      // );
+      // this.setState({
+      //   filteredShips: filteredShips
+      // });
+    } else {
+      console.log("filter error");
+    }
 
   }
 
@@ -88,7 +160,7 @@ export default class Title extends React.Component {
       <div className="content">
 
               Wows Battle Field Guide
-                <ShipFilter shipList={this.state.shipList} filterShips={this.filterShips} />
+                <ShipFilter shipList={this.state.shipList} filterShips={this.filterShips} filterShipss={this.filterrShips}/>
                 <ShipList shipList={this.state.filteredShips} filterShips={this.filterShips} />
                 <ShipSearch />
                 <ShipSpin />

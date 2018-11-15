@@ -13,7 +13,8 @@ export default class ShipFilter extends React.Component {
 
     this.state = {
       shipList: this.props.shipList,
-      filterArr: []
+      filterArr: [],
+      filter: {}
     }
 
     this.handleFilterChange = this.handleFilterChange.bind(this)
@@ -22,6 +23,8 @@ export default class ShipFilter extends React.Component {
   // Generate button groups based on available ship parameters, incase they add more nations, tiers, classes, etc
   buildButtonGrp(type) {
     let arr = [];
+    let filter = Object.assign( {}, this.state.filter);
+    console.log("filter", filter[type]);
     this.props.shipList.map(
       ship => {
         if (!arr.includes(ship[type])) {
@@ -41,7 +44,7 @@ export default class ShipFilter extends React.Component {
             <Button
             key={ship + "shipListFilter"}
             onClick={(e) => this.handleFilterChange(e, ship)}
-            active={this.state.ship === ship}
+            active={filter[type] === ship}
             value={type}>
               {ship.toString()}
             </Button>
@@ -53,19 +56,28 @@ export default class ShipFilter extends React.Component {
 
   handleFilterChange(event, ship) {
     event.preventDefault();
-    this.setState({ ship });
     let shipTypeValue = event.target.value;
+    let filter = Object.assign( {}, this.state.filter);
+    filter[shipTypeValue] = ship;
+    console.log("setstate filter", this.state.filter, ship);
     if (!this.state.filterArr.includes(shipTypeValue)) {
       let arr = this.state.filterArr;
       arr.push(shipTypeValue);
       this.setState({
-        filterArr: arr
+        filterArr: arr,
+        filter: filter
       });
-      this.props.filterShips(shipTypeValue, ship.toString());
+      // this.props.filterShips(shipTypeValue, ship.toString());
+      this.props.filterShipss(filter);
+    } else {
+      this.setState({
+        filter
+      })
     }
     if (shipTypeValue === "prefill") {
       this.setState({
-        filterArr: []
+        filterArr: [],
+        filter: {}
       });
     }
   }
