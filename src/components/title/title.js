@@ -39,12 +39,10 @@ export default class Title extends React.Component {
     }
     this.fetchShips();
     this.filterShips = this.filterShips.bind(this);
-    this.filterShipss = this.filterShipss.bind(this);
-    this.shipsFilter = this.shipsFilter.bind(this);
   }
 
   componentWillMount() {
-    this.filterShips("prefill");
+    this.filterShips({prefill: "prefill"});
   }
 
   fetchShips() {
@@ -57,7 +55,7 @@ export default class Title extends React.Component {
       this.setState({
         shipList: resJson
       }, () => {
-        this.filterShips("prefill");
+        this.filterShips({prefill: "prefill"});
       });
     })
     .then((resJson) => {
@@ -68,90 +66,61 @@ export default class Title extends React.Component {
     })
   }
 
-  filterShips(type, value) {
-    console.log(type, value);
-    if (type === "prefill") {
-      this.setState({
-        filteredShips: this.state.shipList
-      });
-    } else if (this.state) {
-      let filteredShips = this.state.filteredShips.filter(ship => ship[type].toString() === value);
-      this.setState({
-        filteredShips: filteredShips
-      });
-    } else {
-      console.log("filter error");
-    }
-  }
+  // filterShips(type, value) {
+  //   console.log(type, value);
+  //   if (type === "prefill") {
+  //     this.setState({
+  //       filteredShips: this.state.shipList
+  //     });
+  //   } else if (this.state) {
+  //     let filteredShips = this.state.filteredShips.filter(ship => ship[type].toString() === value);
+  //     this.setState({
+  //       filteredShips: filteredShips
+  //     });
+  //   } else {
+  //     console.log("filter error");
+  //   }
+  // }
 
-  filterrShips(filter) {
-    console.log("filter", filter);
+  filterShips(filter) {
+    console.log("filterShips in title", filter, Object.keys(filter).length);
     if (filter.prefill === "prefill") {
       this.setState({
         filteredShips: this.state.shipList
       });
-    } else if (this.state) {
+    } else if (filter) {
       // big ship list
       // filters
-      // iterate each ship by filter, or filter out ship list by filter? forEach shiplist or forEach filterObj?
-      //
-      // this.setState({
-      //
-      // }, );
-      // this.setState({
-      //   filteredShips: filteredShips
-      // });
-    } else {
-      console.log("filter error");
-    }
-  }
-
-  filterShipss(filter) {
-    console.log(filter);
-    this.setState({
-      filteredShips: this.state.shipList
-    });
-    this.shipsFilter(filter)
-  }
-
-  shipsFilter(filter) {
-    console.log(filter);
-    if (filter.prefill === "prefill") {
       this.setState({
         filteredShips: this.state.shipList
-      });
-    // } else if (this.state) {
-    } else if (this.state) {
-      let filtering = () => {
-        for (let key in filter) {
-          // @TODO run nested iterations for filter {} and shipList or pass type and will still have to... gotta finish filter
-          // need to get bb to switch to cl without changing the other tiers nations etc
-        }
-      }
-      let filteredShips = this.state.shipList.filter((ship) => {
-          for (let filterKey in filter) {
-            console.log("object iteration", filterKey, filter[filterKey]);
+      }, () => {
+        console.log("begining of algo");
+        let that = this;
+        let count = 0;
+        callbackLoopFor_setState();
+        // iterate each ship by filter, or filter out ship list by filter? forEach shiplist or forEach filterObj?
+        function callbackLoopFor_setState() {
+          console.log("inside iife", Object.keys(filter), count, filter);
+          if (count < Object.keys(filter).length) {
+            count = count + 1;
+            for (const filterKey in filter) {
+              console.log("filter loop");
 
-
-            // return ship[filterKey] === filter[filterKey];
+              // take one filter value
+              let filterValue = filter[filterKey];
+              // go through list, fitler out ships
+              let newShipList = that.state.filteredShips.filter(ship => ship[filterKey] === filterValue);
+              // setState so next iteration will be shorter
+              that.setState({
+                filteredShips: newShipList
+              }, () => callbackLoopFor_setState());
+            }
           }
-        });
-        this.setState({
-          filteredShips: filteredShips
-        });
-
-      // let filteredShips = this.state.filteredShips.filter((ship) => {
-      //     filter.;
-      //     return ship[type].toString() === filter;
-      //   }
-      // );
-      // this.setState({
-      //   filteredShips: filteredShips
-      // });
+        }
+      });
     } else {
       console.log("filter error");
     }
-
   }
 
   render() {
@@ -160,7 +129,7 @@ export default class Title extends React.Component {
       <div className="content">
 
               Wows Battle Field Guide
-                <ShipFilter shipList={this.state.shipList} filterShips={this.filterShips} filterShipss={this.filterrShips}/>
+                <ShipFilter shipList={this.state.shipList} filterShips={this.filterShips}/>
                 <ShipList shipList={this.state.filteredShips} filterShips={this.filterShips} />
                 <ShipSearch />
                 <ShipSpin />
