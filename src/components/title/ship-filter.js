@@ -24,7 +24,6 @@ export default class ShipFilter extends React.Component {
   buildButtonGrp(type) {
     let arr = [];
     let filter = Object.assign( {}, this.state.filter);
-    console.log("filter as button group is building", filter[type]);
     this.props.shipList.map(
       ship => {
         if (!arr.includes(ship[type])) {
@@ -58,11 +57,8 @@ export default class ShipFilter extends React.Component {
     event.preventDefault();
     let shipTypeValue = event.target.value;
     let filter = Object.assign( {}, this.state.filter);
-    console.log("filter being assigned state.filter");
     filter[shipTypeValue] = shipValue;
-    console.log("setstate filter", this.state.filter, shipValue);
     if (!this.state.filterArr.includes(shipTypeValue)) {
-      console.log("value is not in array", filter, shipTypeValue);
       let arr = this.state.filterArr;
       arr.push(shipTypeValue);
       this.setState({
@@ -71,7 +67,6 @@ export default class ShipFilter extends React.Component {
       });
       this.props.filterShips(filter);
     } else {
-      console.log("value is already in array and not updated", filter, shipTypeValue);
       this.setState({
         filter
       });

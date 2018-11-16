@@ -55,32 +55,18 @@ export default class Title extends React.Component {
       this.setState({
         shipList: resJson
       }, () => {
-        this.filterShips({prefill: "prefill"});
+        console.log("final setState shipsData loaded from fetch ships", this.state.shipList);
+        if (this.state.filter) {
+          this.filterShips(this.state.filter);
+        } else {
+          this.filterShips({prefill: "prefill"});
+        }
       });
     })
-    .then((resJson) => {
-      console.log("after final setState shipsData", this.state.shipList);
-    })
     .catch((err) => {
-      console.log('Fetch Error :-S', err);
+      console.log('Fetch Error', err);
     })
   }
-
-  // filterShips(type, value) {
-  //   console.log(type, value);
-  //   if (type === "prefill") {
-  //     this.setState({
-  //       filteredShips: this.state.shipList
-  //     });
-  //   } else if (this.state) {
-  //     let filteredShips = this.state.filteredShips.filter(ship => ship[type].toString() === value);
-  //     this.setState({
-  //       filteredShips: filteredShips
-  //     });
-  //   } else {
-  //     console.log("filter error");
-  //   }
-  // }
 
   filterShips(filter) {
 
@@ -98,7 +84,8 @@ export default class Title extends React.Component {
           newShipList = newShipList.filter(ship => ship[filterKey] === filterValue);
         }
         this.setState({
-          filteredShips: newShipList
+          filteredShips: newShipList,
+          filter: filter
         });
       });
     } else {
