@@ -42,7 +42,7 @@ export default class Title extends React.Component {
   }
 
   componentWillMount() {
-    this.filterShips("prefill");
+    this.filterShips({prefill: "prefill"});
   }
 
   fetchShips() {
@@ -54,32 +54,43 @@ export default class Title extends React.Component {
       console.log("fetchShips response", resJson);
       this.setState({
         shipList: resJson
+      }, () => {
+        console.log("final setState shipsData loaded from fetch ships", this.state.shipList);
+        if (this.state.filter) {
+          this.filterShips(this.state.filter);
+        } else {
+          this.filterShips({prefill: "prefill"});
+        }
       });
-      this.filterShips("prefill");
-    })
-    .then((resJson) => {
-      console.log("after final setState shipsData", this.state.shipList);
     })
     .catch((err) => {
-      console.log('Fetch Error :-S', err);
+      console.log('Fetch Error', err);
     })
   }
 
-  filterShips(type, value) {
-    console.log(type, value);
-    if (type === "prefill") {
+  filterShips(filter) {
+
+    if (filter.prefill === "prefill") {
       this.setState({
         filteredShips: this.state.shipList
       });
-    } else if (this.state) {
-      let filteredShips = this.state.filteredShips.filter(ship => ship[type].toString() === value);
+    } else if (filter) {
       this.setState({
-        filteredShips: filteredShips
+        filteredShips: this.state.shipList
+      }, () => {
+        let newShipList = this.state.filteredShips;
+        for (const filterKey in filter) {
+          let filterValue = filter[filterKey];
+          newShipList = newShipList.filter(ship => ship[filterKey] === filterValue);
+        }
+        this.setState({
+          filteredShips: newShipList,
+          filter: filter
+        });
       });
     } else {
       console.log("filter error");
     }
-
   }
 
   render() {
@@ -88,7 +99,7 @@ export default class Title extends React.Component {
       <div className="content">
 
               Wows Battle Field Guide
-                <ShipFilter shipList={this.state.shipList} filterShips={this.filterShips} />
+                <ShipFilter shipList={this.state.shipList} filterShips={this.filterShips}/>
                 <ShipList shipList={this.state.filteredShips} filterShips={this.filterShips} />
                 <ShipSearch />
                 <ShipSpin />
