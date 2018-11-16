@@ -54,26 +54,28 @@ export default class ShipFilter extends React.Component {
     )
   }
 
-  handleFilterChange(event, ship) {
+  handleFilterChange(event, shipValue) {
     event.preventDefault();
     let shipTypeValue = event.target.value;
     let filter = Object.assign( {}, this.state.filter);
     console.log("filter being assigned state.filter");
-    filter[shipTypeValue] = ship;
-    console.log("setstate filter", this.state.filter, ship);
+    filter[shipTypeValue] = shipValue;
+    console.log("setstate filter", this.state.filter, shipValue);
     if (!this.state.filterArr.includes(shipTypeValue)) {
+      console.log("value is not in array", filter, shipTypeValue);
       let arr = this.state.filterArr;
       arr.push(shipTypeValue);
       this.setState({
         filterArr: arr,
         filter: filter
       });
-      // this.props.filterShips(shipTypeValue, ship.toString());
       this.props.filterShips(filter);
     } else {
+      console.log("value is already in array and not updated", filter, shipTypeValue);
       this.setState({
         filter
-      })
+      });
+      this.props.filterShips(filter);
     }
     if (shipTypeValue === "prefill") {
       this.setState({

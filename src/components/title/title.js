@@ -83,40 +83,23 @@ export default class Title extends React.Component {
   // }
 
   filterShips(filter) {
-    console.log("filterShips in title", filter, Object.keys(filter).length);
+
     if (filter.prefill === "prefill") {
       this.setState({
         filteredShips: this.state.shipList
       });
     } else if (filter) {
-      // big ship list
-      // filters
       this.setState({
         filteredShips: this.state.shipList
       }, () => {
-        console.log("begining of algo");
-        let that = this;
-        let count = 0;
-        callbackLoopFor_setState();
-        // iterate each ship by filter, or filter out ship list by filter? forEach shiplist or forEach filterObj?
-        function callbackLoopFor_setState() {
-          console.log("inside iife", Object.keys(filter), count, filter);
-          if (count < Object.keys(filter).length) {
-            count = count + 1;
-            for (const filterKey in filter) {
-              console.log("filter loop");
-
-              // take one filter value
-              let filterValue = filter[filterKey];
-              // go through list, fitler out ships
-              let newShipList = that.state.filteredShips.filter(ship => ship[filterKey] === filterValue);
-              // setState so next iteration will be shorter
-              that.setState({
-                filteredShips: newShipList
-              }, () => callbackLoopFor_setState());
-            }
-          }
+        let newShipList = this.state.filteredShips;
+        for (const filterKey in filter) {
+          let filterValue = filter[filterKey];
+          newShipList = newShipList.filter(ship => ship[filterKey] === filterValue);
         }
+        this.setState({
+          filteredShips: newShipList
+        });
       });
     } else {
       console.log("filter error");
