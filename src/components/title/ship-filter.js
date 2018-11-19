@@ -56,7 +56,7 @@ export default class ShipFilter extends React.Component {
   handleFilterChange(event, shipValue) {
     event.preventDefault();
     let shipTypeValue = event.target.value;
-    let filter = Object.assign( {}, this.state.filter);
+    let filter = Object.assign( {}, this.state.filter); 
     filter[shipTypeValue] = shipValue;
     let arr = this.state.filterArr;
     if (!this.state.filterArr.includes(shipTypeValue)) {
