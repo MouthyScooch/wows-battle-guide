@@ -9,4 +9,4 @@ import './index.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-serviceWorker.register();
+serviceWorker.unregister(); //register serviceWorker. Application is ready to register with manifest.json in place

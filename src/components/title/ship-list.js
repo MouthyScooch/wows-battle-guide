@@ -1,4 +1,9 @@
 import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
+
+
+
+
 import {
   UncontrolledTooltip,
   Table,
@@ -17,9 +22,10 @@ export default class ShipList extends React.Component {
   }
 
   handleClick(ship) {
-    // redirect to ship's homepage
-    console.log(ship);
-    alert(`"${ship.name}" would like to say hi :) this will eventually lead you to ${ship.name}'s home page, where the app will really begin. Thanks guys`);
+
+    console.log("props", this.props, ship);
+    this.props.history.push(`/ship/${ship.name}`);
+    // will pass ship name in params and pick up ship with params ship name and filtering list, then display
   }
 
   render() {
@@ -46,11 +52,11 @@ export default class ShipList extends React.Component {
               </thead>
               <tbody>
               {
-                this.props.shipList.map(
+                this.props.filteredShips.map(
                   function (ship) {
                     return(
                       <tr key={ship.name + "shipTable"} id={"tooltip" + ship.ship_id_str} onClick={() => that.handleClick(ship)}>
-                        <th scope='row'>{ship.tier}</th>
+                        <td>{ship.tier}</td>
                         <td>{ship.name}</td>
                         <td>{ship.type}</td>
                         <td>{ship.nation}</td>
