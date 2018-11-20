@@ -17,7 +17,7 @@ export default class ShipFilter extends React.Component {
       filter: {}
     }
 
-    this.handleFilterChange = this.handleFilterChange.bind(this)
+    this.handleFilterChange = this.handleFilterChange.bind(this);
   }
 
   // Generate button groups based on available ship parameters, incase they add more nations, tiers, classes, etc
@@ -58,8 +58,8 @@ export default class ShipFilter extends React.Component {
     let shipTypeValue = event.target.value;
     let filter = Object.assign( {}, this.state.filter);
     filter[shipTypeValue] = shipValue;
+    let arr = this.state.filterArr;
     if (!this.state.filterArr.includes(shipTypeValue)) {
-      let arr = this.state.filterArr;
       arr.push(shipTypeValue);
       this.setState({
         filterArr: arr,
@@ -78,6 +78,16 @@ export default class ShipFilter extends React.Component {
         filter: {}
       });
     }
+    if (shipTypeValue === "reset") {
+      delete filter[shipValue];
+      delete filter.reset;
+      arr = arr.filter(e => e !== shipValue);
+      arr = arr.filter(e => e !== "reset");
+      this.setState({
+        filterArr: arr,
+        filter: filter
+      });
+    }
   }
 
   render() {
@@ -93,9 +103,9 @@ export default class ShipFilter extends React.Component {
             <ButtonGroup>
               <Button
               key={"0tiershipListFilter"}
-              onClick={(e) => this.handleFilterChange(e, "prefill")}
-              value={"prefill"}>
-                {0}
+              onClick={(e) => this.handleFilterChange(e, "tier")}
+              value={"reset"}>
+                {"reset Tier"}
               </Button>
               {this.buildButtonGrp("tier")}
             </ButtonGroup>
@@ -106,9 +116,9 @@ export default class ShipFilter extends React.Component {
             <ButtonGroup>
               <Button
               key={"0classshipListFilter"}
-              onClick={(e) => this.handleFilterChange(e, "prefill")}
-              value={"prefill"}>
-                {0}
+              onClick={(e) => this.handleFilterChange(e, "type")}
+              value={"reset"}>
+                {"reset Class"}
               </Button>
               {this.buildButtonGrp("type")}
             </ButtonGroup>
@@ -119,9 +129,9 @@ export default class ShipFilter extends React.Component {
             <ButtonGroup>
               <Button
               key={"0nationshipListFilter"}
-              onClick={(e) => this.handleFilterChange(e, "prefill")}
-              value={"prefill"}>
-                {0}
+              onClick={(e) => this.handleFilterChange(e, "nation")}
+              value={"reset"}>
+                {"reset Nation"}
               </Button>
               {this.buildButtonGrp("nation")}
             </ButtonGroup>
@@ -130,13 +140,13 @@ export default class ShipFilter extends React.Component {
         <Row>
           <Col>
             <ButtonGroup>
+            is premium
               <Button
               key={"0qualityshipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "prefill")}
               value={"prefill"}>
-                {0}
+                {"reset All"}
               </Button>
-              is premium
               {this.buildButtonGrp("is_premium")}
             </ButtonGroup>
           </Col>
