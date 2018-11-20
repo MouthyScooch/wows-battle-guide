@@ -24,7 +24,7 @@ export default class ShipList extends React.Component {
   handleClick(ship) {
 
     console.log("props", this.props, ship);
-    this.props.history.push('/ship');
+    this.props.history.push(`/ship/${ship.name}`);
     // will pass ship name in params and pick up ship with params ship name and filtering list, then display
   }
 

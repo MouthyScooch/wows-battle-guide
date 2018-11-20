@@ -34,7 +34,7 @@ class App extends Component {
         { tier: 9, type: "DD", nation: "USN", is_premium: "gold", name: "Black" },
       ]
     }
-    // this.fetchShips();
+    this.fetchShips();
   }
 
   fetchShips() {
@@ -63,16 +63,20 @@ class App extends Component {
         <main>
           <BrowserRouter>
             <Switch>
-              <Route exact path='/' component={Title} history={history} shipList={this.state.shipList}/>
-              <Route exact path='/title' component={Title} history={history} shipList={this.state.shipList}/>
-              <Route
-              exact
-              path='/ship'
+              <Route exact path='/'
+              component={Title}
+              history={history}/>
 
+              <Route exact path='/title'
+              component={Title}
+              history={history}/>
+
+              <Route exact path='/ship/:shipName'
               history={history}
               render={(routeProps) => (
                 <Ship {...routeProps} shipList={that.state.shipList} />
               )}/>
+
               <Redirect to="/title" />
             </Switch>
           </BrowserRouter>

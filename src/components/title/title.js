@@ -20,7 +20,7 @@ export default class Title extends React.Component {
     this.fetchShips();
     this.filterShips = this.filterShips.bind(this);
   }
-
+// after redux and later larger databases are implimented, these fetch calls will be removed
   fetchShips() {
     fetch('/api/ships')
     .then((response) => {
@@ -87,12 +87,15 @@ export default class Title extends React.Component {
                 <ShipFilter
                 shipList={this.state.shipList}
                 filterShips={this.filterShips}/>
+
                 <ShipList
                 shipList={this.state.shipList}
                 filterShips={this.filterShips}
                 filteredShips={this.state.filteredShips}
                 history={this.props.history}/>
+
                 <ShipSearch />
+
                 <ShipSpin />
 
         </div>
