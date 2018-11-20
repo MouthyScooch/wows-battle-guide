@@ -14,7 +14,11 @@ export default class ShipFilter extends React.Component {
     this.state = {
       shipList: this.props.shipList,
       filterArr: [],
-      filter: {}
+      filter: {
+        tier: "0",
+        type: "0",
+        nation: "0"
+      }
     }
 
     this.handleFilterChange = this.handleFilterChange.bind(this);
@@ -60,16 +64,19 @@ export default class ShipFilter extends React.Component {
     let shipTypeValue = event.target.value;
     // build object, regardless of the filter's state.
     let filter = Object.assign( {}, this.state.filter);
+    // the filter object is updated
     filter[shipTypeValue] = shipValue;
-    // bring filter into memory
+    // bring filter arr into memory
     let arr = this.state.filterArr;
+    // check if value is in button array already and add it if it isn't
     if (!this.state.filterArr.includes(shipTypeValue)) {
-      // add a new filter param
+      // add a new filter param and set the new filter to state
       arr.push(shipTypeValue);
       this.setState({
         filterArr: arr,
         filter: filter
       });
+      // filter shipList with new filter
       this.props.filterShips(filter);
     } else {
       // add conditional later to check if filter already exsists, so setState doesn't need to be called
@@ -87,14 +94,17 @@ export default class ShipFilter extends React.Component {
     }
     if (shipTypeValue === "reset") {
       // reset only one filter param
-      delete filter[shipValue];
+      // set param to null status
+      filter[shipValue] = "0";
+      // remove the reset param
       delete filter.reset;
-      arr = arr.filter(e => e !== shipValue);
+      // remove reset param from arr
       arr = arr.filter(e => e !== "reset");
+      // set the new filter and filter shipList
       this.setState({
         filterArr: arr,
         filter: filter
-      });
+      }, () => this.props.filterShips(this.state.filter));
     }
   }
 
@@ -108,12 +118,13 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup>
+            <ButtonGroup size="sm">
               <Button
               key={"0tiershipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "tier")}
+              active={this.state.filter.tier === "0"}
               value={"reset"}>
-                {"reset Tier"}
+                {"0"}
               </Button>
               {this.buildButtonGrp("tier")}
             </ButtonGroup>
@@ -121,12 +132,13 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup>
+            <ButtonGroup size="sm">
               <Button
               key={"0classshipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "type")}
+              active={this.state.filter.type === "0"}
               value={"reset"}>
-                {"reset Class"}
+                {"0"}
               </Button>
               {this.buildButtonGrp("type")}
             </ButtonGroup>
@@ -134,12 +146,13 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup>
+            <ButtonGroup size="sm">
               <Button
               key={"0nationshipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "nation")}
+              active={this.state.filter.nation === "0"}
               value={"reset"}>
-                {"reset Nation"}
+                {"0"}
               </Button>
               {this.buildButtonGrp("nation")}
             </ButtonGroup>
@@ -147,13 +160,13 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup>
+            <ButtonGroup size="sm">
             is premium
               <Button
               key={"0qualityshipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "prefill")}
               value={"prefill"}>
-                {"reset All"}
+                {"All 0"}
               </Button>
               {this.buildButtonGrp("is_premium")}
             </ButtonGroup>

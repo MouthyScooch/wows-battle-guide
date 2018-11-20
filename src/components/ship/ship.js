@@ -32,7 +32,7 @@ export default class Ship extends React.Component {
                 <div>{this.state.selectedShip.name}</div>
                 <div>{this.state.selectedShip.tier}</div>
                 <div>{this.state.selectedShip.type}</div>
-                <div>{this.state.selectedShip.nation}</div>
+                <div>{this.state.selectedShip.nation }</div>
                 <div>{this.state.selectedShip.name}</div>
                 <div>{this.state.selectedShip.name}</div>
                 <div>{this.state.selectedShip.name}</div>

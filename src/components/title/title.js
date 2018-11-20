@@ -66,7 +66,9 @@ export default class Title extends React.Component {
         for (const filterKey in filter) {
           let filterValue = filter[filterKey];
           // additionally, seperating out the list into memory, let's us shrink the list with each iteration.
-          newShipList = newShipList.filter(ship => ship[filterKey] === filterValue);
+          if (filterValue != "0") {
+            newShipList = newShipList.filter(ship => ship[filterKey] === filterValue);
+          }
         }
         this.setState({
           filteredShips: newShipList,
