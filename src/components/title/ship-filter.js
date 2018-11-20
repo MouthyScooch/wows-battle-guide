@@ -108,7 +108,7 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup>
+            <ButtonGroup size="sm">
               <Button
               key={"0tiershipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "tier")}
@@ -121,7 +121,7 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup>
+            <ButtonGroup size="sm">
               <Button
               key={"0classshipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "type")}
@@ -134,7 +134,7 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup>
+            <ButtonGroup size="sm">
               <Button
               key={"0nationshipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "nation")}
@@ -147,7 +147,7 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup>
+            <ButtonGroup size="sm">
             is premium
               <Button
               key={"0qualityshipListFilter"}
