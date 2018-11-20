@@ -17,7 +17,7 @@ export default class ShipList extends React.Component {
   }
 
   handleClick(ship) {
-    // redirect to ship's homepage
+    // will be a redirect to ship's homepage
     console.log(ship);
     alert(`"${ship.name}" would like to say hi :) this will eventually lead you to ${ship.name}'s home page, where the app will really begin. Thanks guys`);
   }

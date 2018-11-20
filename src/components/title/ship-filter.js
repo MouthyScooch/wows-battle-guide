@@ -21,16 +21,18 @@ export default class ShipFilter extends React.Component {
   }
 
   // Generate button groups based on available ship parameters, incase they add more nations, tiers, classes, etc
-  buildButtonGrp(type) {
+  buildButtonGrp(param) {
     let arr = [];
     let filter = Object.assign( {}, this.state.filter);
+    // build an array that wont build duplicate buttons
     this.props.shipList.map(
       ship => {
-        if (!arr.includes(ship[type])) {
-          arr.push(ship[type]);
+        if (!arr.includes(ship[param])) {
+          arr.push(ship[param]);
         }
       }
     )
+    // sort the tier parameter array to sort the button order
     if (typeof arr[0] == "number") {
       arr = arr.sort((a, b) => a - b);
     } else {
@@ -38,14 +40,14 @@ export default class ShipFilter extends React.Component {
     }
     return (
       arr.map(
-        ship => {
+        shipParam => {
           return (
             <Button
-            key={ship + "shipListFilter"}
-            onClick={(e) => this.handleFilterChange(e, ship)}
-            active={filter[type] === ship}
-            value={type}>
-              {ship.toString()}
+            key={shipParam + "shipListFilter"}
+            onClick={(e) => this.handleFilterChange(e, shipParam)}
+            active={filter[param] === shipParam}
+            value={param}>
+              {shipParam.toString()}
             </Button>
           )
         }
@@ -56,10 +58,13 @@ export default class ShipFilter extends React.Component {
   handleFilterChange(event, shipValue) {
     event.preventDefault();
     let shipTypeValue = event.target.value;
+    // build object, regardless of the filter's state.
     let filter = Object.assign( {}, this.state.filter);
     filter[shipTypeValue] = shipValue;
+    // bring filter into memory
     let arr = this.state.filterArr;
     if (!this.state.filterArr.includes(shipTypeValue)) {
+      // add a new filter param
       arr.push(shipTypeValue);
       this.setState({
         filterArr: arr,
@@ -67,18 +72,21 @@ export default class ShipFilter extends React.Component {
       });
       this.props.filterShips(filter);
     } else {
+      // add conditional later to check if filter already exsists, so setState doesn't need to be called
       this.setState({
         filter
       });
       this.props.filterShips(filter);
     }
     if (shipTypeValue === "prefill") {
+      // reset the whole filter
       this.setState({
         filterArr: [],
         filter: {}
       });
     }
     if (shipTypeValue === "reset") {
+      // reset only one filter param
       delete filter[shipValue];
       delete filter.reset;
       arr = arr.filter(e => e !== shipValue);
