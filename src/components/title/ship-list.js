@@ -60,7 +60,6 @@ export default class ShipList extends React.Component {
                   <th>Name</th>
                   <th>Class</th>
                   <th>Nation</th>
-                  <th>is_premium</th>
                 </tr>
               </thead>
               <tbody>
@@ -73,7 +72,6 @@ export default class ShipList extends React.Component {
                         <td>{ship.name}</td>
                         <td>{ship.type}</td>
                         <td>{ship.nation}</td>
-                        <td>{ship.is_premium.toString()}</td>
                         <UncontrolledTooltip placement="right" target={"tooltip" + ship.ship_id_str}>
                           {ship.description}
                         </UncontrolledTooltip>
