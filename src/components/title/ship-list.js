@@ -30,6 +30,19 @@ export default class ShipList extends React.Component {
 
   render() {
     let that = this;
+    let shipsList = this.props.filteredShips.sort(function(a, b) {
+      // super generic sort obj method I picked up from the CDN. this will be changeable in the future to set by tier or decending order etc
+      var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      // names must be equal
+      return 0;
+    });
     return (
       <div>
         <Row>
@@ -40,7 +53,7 @@ export default class ShipList extends React.Component {
         <Row>
         <Col></Col>
           <Col>
-            <table className="table table-hover">
+            <Table bordered size="sm" className="table table-hover">
               <thead>
                 <tr>
                   <th>Tier</th>
@@ -52,7 +65,7 @@ export default class ShipList extends React.Component {
               </thead>
               <tbody>
               {
-                this.props.filteredShips.map(
+                shipsList.map(
                   function (ship) {
                     return(
                       <tr key={ship.name + "shipTable"} id={"tooltip" + ship.ship_id_str} onClick={() => that.handleClick(ship)}>
@@ -70,7 +83,7 @@ export default class ShipList extends React.Component {
                 )
               }
               </tbody>
-            </table>
+            </Table>
           </Col>
           <Col></Col>
         </Row>

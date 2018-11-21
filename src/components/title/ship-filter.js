@@ -1,6 +1,11 @@
 import React from 'react';
 
 import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  ButtonDropdown,
   Button,
   ButtonGroup,
   Row,
@@ -18,15 +23,53 @@ export default class ShipFilter extends React.Component {
         tier: "0",
         type: "0",
         nation: "0"
-      }
+      },
+      dropdownOpen: false,
+      convert: {Destroyer: "DD/DL", Cruiser: "CL/CA", Battleship: "BB/BC", AirCarrier: "CV", france: "FN", uk: "RN", germany: "KM", ussr: "VMF", usa: "USN", japan: "IJN"}
     }
-
+    this.toggle = this.toggle.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
+  }
+
+  toggle() {
+    if (this.state.dropdownOpen) {
+      this.setState({
+        dropdownOpen: false
+      });
+    }else if (!this.state.dropdownOpen){
+      this.setState({
+        dropdownOpen: true
+      });
+    }
+  }
+
+  convertName(name) {
+    if (this.state.convert.hasOwnProperty(name)) {
+      return this.state.convert[name]
+    } else if (typeof name === "number") {
+      return this.convertToRoman(name)
+    } else {
+      return name.toString()
+    }
+  }
+
+  convertToRoman(num) {
+    var roman = { X: 10, IX: 9, V: 5, IV: 4, I: 1 };
+    var str = '';
+
+    for (var i of Object.keys(roman)) {
+      var q = Math.floor(num / roman[i]);
+      num -= q * roman[i];
+      str += i.repeat(q);
+    }
+    return str;
   }
 
   // Generate button groups based on available ship parameters, incase they add more nations, tiers, classes, etc
   buildButtonGrp(param) {
     let arr = [];
+    let arrN = [];
+    let arrM = [];
     let filter = Object.assign( {}, this.state.filter);
     // build an array that wont build duplicate buttons
     this.props.shipList.map(
@@ -36,12 +79,75 @@ export default class ShipFilter extends React.Component {
         }
       }
     )
+    // break appart nations array to group smaller nations together
+    if (arr.includes("japan")) {
+      arr.map(
+        shipName => {
+          if (shipName === "japan" || shipName === "usa" || shipName === "ussr" || shipName === "germany" || shipName === "uk" || shipName === "france") {
+            arrN.push(shipName);
+          } else {
+            arrM.push(shipName);
+          }
+        }
+      )
+    }
     // sort the tier parameter array to sort the button order
     if (typeof arr[0] == "number") {
       arr = arr.sort((a, b) => a - b);
+      // need to convert numbers to roman numerals
     } else {
       arr = arr.sort();
     }
+
+    if (arrM.length > 0) {
+      return (
+        <div>
+          {
+            arrN.map(
+              shipParam => {
+                return (
+                  <Button
+                  outline
+                  color={"primary"}
+                  key={shipParam + "shipListFilter"}
+                  onClick={(e) => this.handleFilterChange(e, shipParam)}
+                  active={filter[param] === shipParam}
+                  value={param}>
+                  {this.convertName(shipParam)}
+                  </Button>
+                )
+              }
+            )
+          }
+          <ButtonDropdown active={true} direction="left" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+          <DropdownToggle caret outline color={"secondary"}>
+
+          </DropdownToggle>
+          <DropdownMenu>
+          {
+            arrM.map(
+              shipParam => {
+                return (
+                  <DropdownItem key={shipParam + "shipListFilter"}>
+                    <Button outline
+                    color={"primary"}
+                    key={shipParam + "shipListFilter"}
+                    onClick={(e) => this.handleFilterChange(e, shipParam)}
+                    active={filter[param] === shipParam}
+                    value={param}>
+                    {shipParam.toString()}
+                    </Button>
+                  </DropdownItem>
+                )
+              }
+            )
+          }
+          </DropdownMenu>
+          </ButtonDropdown>
+        </div>
+      )
+    }
+
     return (
       arr.map(
         shipParam => {
@@ -53,7 +159,7 @@ export default class ShipFilter extends React.Component {
             onClick={(e) => this.handleFilterChange(e, shipParam)}
             active={filter[param] === shipParam}
             value={param}>
-              {shipParam.toString()}
+              {this.convertName(shipParam)}
             </Button>
           )
         }
@@ -91,7 +197,11 @@ export default class ShipFilter extends React.Component {
       // reset the whole filter
       this.setState({
         filterArr: [],
-        filter: {}
+        filter: {
+          tier: "0",
+          type: "0",
+          nation: "0"
+        }
       });
     }
     if (shipTypeValue === "reset") {
