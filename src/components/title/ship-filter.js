@@ -25,7 +25,10 @@ export default class ShipFilter extends React.Component {
         nation: "0"
       },
       dropdownOpen: false,
-      convert: {Destroyer: "DD/DL", Cruiser: "CL/CA", Battleship: "BB/BC", AirCarrier: "CV", france: "FN", uk: "RN", germany: "KM", ussr: "VMF", usa: "USN", japan: "IJN"}
+      convert: {Destroyer: "DD/DL", Cruiser: "CL/CA", Battleship: "BB/BC", AirCarrier: "CV", france: "FN", uk: "RN", germany: "KM", ussr: "VMF", usa: "USN", japan: "IJN"},
+      showPrem: false,
+      showNation: false,
+      showType: false
     }
     this.toggle = this.toggle.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
@@ -167,9 +170,33 @@ export default class ShipFilter extends React.Component {
     )
   }
 
+  showBtns(shipValue) {
+    console.log("showBtns shipValue", shipValue);
+    if (shipValue === "tier") {
+      this.setState({
+        showType: true
+      })
+    } else if (shipValue === "type") {
+      this.setState({
+        showNation: true
+      })
+    } else if (shipValue === "nation") {
+      this.setState({
+        showPrem: true
+      })
+    } else if (shipValue === "prefill"){
+      this.setState({
+        showType: false,
+        showNation: false,
+        showPrem: false
+      })
+    }
+  }
+
   handleFilterChange(event, shipValue) {
     event.preventDefault();
     let shipTypeValue = event.target.value;
+    this.showBtns(shipTypeValue)
     // build object, regardless of the filter's state.
     let filter = Object.assign( {}, this.state.filter);
     // the filter object is updated
@@ -231,20 +258,13 @@ export default class ShipFilter extends React.Component {
         <Row>
           <Col>
             <ButtonGroup>
-              <Button
-              outline
-              color={"primary"}
-              key={"0tiershipListFilter"}
-              onClick={(e) => this.handleFilterChange(e, "tier")}
-              active={this.state.filter.tier === "0"}
-              value={"reset"}>
-                {"0"}
-              </Button>
+
               {this.buildButtonGrp("tier")}
             </ButtonGroup>
           </Col>
         </Row>
         <Row>-</Row>
+        { this.state.showType &&
         <Row>
           <Col>
             <ButtonGroup>
@@ -261,7 +281,9 @@ export default class ShipFilter extends React.Component {
             </ButtonGroup>
           </Col>
         </Row>
+      }
         <Row>-</Row>
+        { this.state.showNation &&
         <Row>
           <Col>
             <ButtonGroup>
@@ -278,7 +300,9 @@ export default class ShipFilter extends React.Component {
             </ButtonGroup>
           </Col>
         </Row>
+      }
         <Row>-</Row>
+        { this.state.showPrem &&
         <Row>
           <Col>
           <Button
@@ -295,6 +319,7 @@ export default class ShipFilter extends React.Component {
             </ButtonGroup>
           </Col>
         </Row>
+        }
       </div>
     )
   }
