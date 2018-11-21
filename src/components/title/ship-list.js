@@ -40,7 +40,7 @@ export default class ShipList extends React.Component {
         <Row>
         <Col></Col>
           <Col>
-            <Table dark>
+            <table className="table table-hover">
               <thead>
                 <tr>
                   <th>Tier</th>
@@ -70,7 +70,7 @@ export default class ShipList extends React.Component {
                 )
               }
               </tbody>
-            </Table>
+            </table>
           </Col>
           <Col></Col>
         </Row>

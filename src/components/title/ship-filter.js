@@ -47,6 +47,8 @@ export default class ShipFilter extends React.Component {
         shipParam => {
           return (
             <Button
+            outline
+            color={"primary"}
             key={shipParam + "shipListFilter"}
             onClick={(e) => this.handleFilterChange(e, shipParam)}
             active={filter[param] === shipParam}
@@ -118,8 +120,10 @@ export default class ShipFilter extends React.Component {
         </Row>
         <Row>
           <Col>
-            <ButtonGroup size="sm">
+            <ButtonGroup>
               <Button
+              outline
+              color={"primary"}
               key={"0tiershipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "tier")}
               active={this.state.filter.tier === "0"}
@@ -130,10 +134,13 @@ export default class ShipFilter extends React.Component {
             </ButtonGroup>
           </Col>
         </Row>
+        <Row>-</Row>
         <Row>
           <Col>
-            <ButtonGroup size="sm">
+            <ButtonGroup>
               <Button
+              outline
+              color={"primary"}
               key={"0classshipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "type")}
               active={this.state.filter.type === "0"}
@@ -144,10 +151,13 @@ export default class ShipFilter extends React.Component {
             </ButtonGroup>
           </Col>
         </Row>
+        <Row>-</Row>
         <Row>
           <Col>
-            <ButtonGroup size="sm">
+            <ButtonGroup>
               <Button
+              outline
+              color={"primary"}
               key={"0nationshipListFilter"}
               onClick={(e) => this.handleFilterChange(e, "nation")}
               active={this.state.filter.nation === "0"}
@@ -158,16 +168,19 @@ export default class ShipFilter extends React.Component {
             </ButtonGroup>
           </Col>
         </Row>
+        <Row>-</Row>
         <Row>
           <Col>
-            <ButtonGroup size="sm">
-            is premium
-              <Button
-              key={"0qualityshipListFilter"}
-              onClick={(e) => this.handleFilterChange(e, "prefill")}
-              value={"prefill"}>
-                {"All 0"}
-              </Button>
+          <Button
+          outline
+          color={"warning"}
+          key={"0qualityshipListFilter"}
+          onClick={(e) => this.handleFilterChange(e, "prefill")}
+          value={"prefill"}>
+          {"All 0"}
+          </Button>
+            <ButtonGroup>
+            on sale
               {this.buildButtonGrp("is_premium")}
             </ButtonGroup>
           </Col>
