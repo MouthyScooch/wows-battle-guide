@@ -30,29 +30,27 @@ export default class ShipList extends React.Component {
 
   render() {
     let that = this;
-    let shipsList = this.props.filteredShips.sort(function(a, b) {
-      // super generic sort obj method I picked up from the CDN. this will be changeable in the future to set by tier or decending order etc
-      var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-      var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-      if (nameA < nameB) {
-        return -1;
+    let shipsList = this.props.filteredShips.sort((a, b) => {
+      if (this.props.filteredShips[0].name) {
+        // super generic sort obj method I picked up from the CDN. this will be changeable in the future to set by tier or decending order etc
+        var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
       }
-      if (nameA > nameB) {
-        return 1;
-      }
-      // names must be equal
-      return 0;
     });
     return (
       <div>
         <Row>
-          <Col>
-            ShipList
-          </Col>
-        </Row>
-        <Row>
         <Col></Col>
           <Col>
+          <div>*be sure to select your ship below</div>
             <Table bordered size="sm" className="table table-hover">
               <thead>
                 <tr>

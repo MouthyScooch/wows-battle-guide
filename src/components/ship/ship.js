@@ -18,7 +18,7 @@ export default class Ship extends React.Component {
     console.log("hayStack", hayStack, props);
     this.state = {
       selectedShip: hayStack[0]
-    }
+    };
   }
 
 
@@ -28,7 +28,7 @@ export default class Ship extends React.Component {
       <div>
         <div className="content">
               Wows Battle Field Guide
-                Ship's Page!!!!!!!!!!!!
+                Ship's Page!!!!!!!!!!!!...... this is it for now wah wah wah
                 <div>{this.state.selectedShip.name}</div>
                 <div>{this.state.selectedShip.tier}</div>
                 <div>{this.state.selectedShip.type}</div>

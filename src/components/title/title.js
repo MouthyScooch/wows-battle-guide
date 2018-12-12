@@ -4,7 +4,6 @@ import React from 'react';
 import ShipSearch from './ship-search.js';
 import ShipFilter from './ship-filter.js';
 import ShipList from './ship-list.js';
-import ShipSpin from '../ship-spin.js';
 
 export default class Title extends React.Component {
   constructor (props) {
@@ -12,10 +11,39 @@ export default class Title extends React.Component {
 
     this.state = {
       selectedShip: "",
+      showShipsList: false,
       shipList: [
-
+        { tier: 10, type: "Destroyer"},
+        { tier: 9, type: "Battleship"},
+        { tier: 8, type: "AirCarrier"},
+        { tier: 7, type: "Cruiser"},
+        { tier: 6, type: "Cruiser"},
+        { tier: 5, type: "Cruiser"},
+        { tier: 4, type: "Cruiser"},
+        { tier: 3, type: "Cruiser"},
+        { tier: 2, type: "Cruiser"},
+        { tier: 1, type: "Cruiser"}
       ],
-      filteredShips: []
+      filteredShips:
+      [
+        // { tier: 10, type: "Battleship", nation: "IJN", is_premium: "silver", name: "Yamato" },
+        // { tier: 10, type: "Battleship", nation: "USN", is_premium: "silver", name: "Montana" },
+        // { tier: 10, type: "Cruiser", nation: "IJN", is_premium: "silver", name: "Zao" },
+        // { tier: 10, type: "Cruiser", nation: "USN", is_premium: "silver", name: "Des Moines" },
+        // { tier: 10, type: "Destroyer", nation: "IJN", is_premium: "silver", name: "Shimakaze" },
+        // { tier: 10, type: "Destroyer", nation: "USN", is_premium: "silver", name: "Gearing" },
+        // { tier: 10, type: "AirCarrier", nation: "USN", is_premium: "silver", name: "Midway" },
+        // { tier: 9, type: "Cruiser", nation: "USN", is_premium: "silver", name: "Buffalo" },
+        // { tier: 8, type: "Cruiser", nation: "USN", is_premium: "silver", name: "Baltimore" },
+        // { tier: 7, type: "Cruiser", nation: "USN", is_premium: "silver", name: "New Orleans" },
+        // { tier: 6, type: "Cruiser", nation: "USN", is_premium: "silver", name: "Pensacola" },
+        // { tier: 5, type: "Cruiser", nation: "USN", is_premium: "silver", name: "Omaha" },
+        // { tier: 4, type: "Cruiser", nation: "USN", is_premium: "silver", name: "Phenoix" },
+        // { tier: 3, type: "Cruiser", nation: "USN", is_premium: "silver", name: "t3usncl" },
+        // { tier: 2, type: "Cruiser", nation: "USN", is_premium: "silver", name: "t2usncl" },
+        // { tier: 1, type: "Cruiser", nation: "USN", is_premium: "silver", name: "Erie" },
+        // { tier: 9, type: "Destroyer", nation: "USN", is_premium: "gold", name: "Black" },
+      ]
     }
     this.fetchShips();
     this.filterShips = this.filterShips.bind(this);
@@ -51,7 +79,8 @@ export default class Title extends React.Component {
     if (filter.prefill === "prefill") {
       // reset the whole list
       this.setState({
-        filteredShips: this.state.shipList
+        filteredShips: this.state.shipList,
+        showShipsList: false
       });
     } else if (filter) {
       // reset the list
@@ -66,13 +95,14 @@ export default class Title extends React.Component {
         for (const filterKey in filter) {
           let filterValue = filter[filterKey];
           // additionally, seperating out the list into memory, let's us shrink the list with each iteration.
-          if (filterValue != "0") {
+          if (filterValue !== "0") {
             newShipList = newShipList.filter(ship => ship[filterKey] === filterValue);
           }
         }
         this.setState({
           filteredShips: newShipList,
-          filter: filter
+          filter: filter,
+          showShipsList: true
         });
       });
     } else {
@@ -85,20 +115,19 @@ export default class Title extends React.Component {
       <div>
       <div className="content">
 
-              World of Warships Battle Field Guide
+              <h4><u>World of Warships Battle Field Guide</u></h4>
                 <ShipFilter
                 shipList={this.state.shipList}
                 filterShips={this.filterShips}/>
-
-                <ShipList
-                shipList={this.state.shipList}
-                filterShips={this.filterShips}
-                filteredShips={this.state.filteredShips}
-                history={this.props.history}/>
-
+                {
+                  this.state.showShipsList &&
+                  <ShipList
+                  shipList={this.state.shipList}
+                  filterShips={this.filterShips}
+                  filteredShips={this.state.filteredShips}
+                  history={this.props.history}/>
+                }
                 <ShipSearch />
-
-                <ShipSpin />
 
         </div>
       </div>

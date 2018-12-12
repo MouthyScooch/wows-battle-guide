@@ -25,11 +25,12 @@ export default class ShipFilter extends React.Component {
         nation: "0"
       },
       dropdownOpen: false,
-      convert: {Destroyer: "DD/DL", Cruiser: "CL/CA", Battleship: "BB/BC", AirCarrier: "CV", france: "FN", uk: "RN", germany: "KM", ussr: "VMF", usa: "USN", japan: "IJN"},
+      convert: {Destroyer: "DD", Cruiser: "CL/CA", Battleship: "BB", AirCarrier: "CV", france: "FN", uk: "RN", germany: "KM", ussr: "VMF", usa: "USN", japan: "IJN"},
       showPrem: false,
       showNation: false,
       showType: false
-    }
+    };
+    this.buildButtonGrp("tier");
     this.toggle = this.toggle.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
   }
@@ -82,7 +83,7 @@ export default class ShipFilter extends React.Component {
         }
       }
     )
-    // break appart nations array to group smaller nations together
+    // if the array is an array of nations, break appart nations array to group smaller nations together for a dropdown option
     if (arr.includes("japan")) {
       arr.map(
         shipName => {
@@ -102,6 +103,7 @@ export default class ShipFilter extends React.Component {
       arr = arr.sort();
     }
 
+    // if there is a second list of nations, build the special nations button group
     if (arrM.length > 0) {
       return (
         <div>
@@ -150,7 +152,7 @@ export default class ShipFilter extends React.Component {
         </div>
       )
     }
-
+    // else if not a special nations button group
     return (
       arr.map(
         shipParam => {
@@ -252,13 +254,12 @@ export default class ShipFilter extends React.Component {
       <div>
         <Row>
           <Col>
-            ShipFilter
+            Please select your ship's tier to find your ship and begin
           </Col>
         </Row>
         <Row>
           <Col>
             <ButtonGroup>
-
               {this.buildButtonGrp("tier")}
             </ButtonGroup>
           </Col>
@@ -267,6 +268,7 @@ export default class ShipFilter extends React.Component {
         { this.state.showType &&
         <Row>
           <Col>
+          <Row><Col>Often, tier and class are all that is needed</Col></Row>
             <ButtonGroup>
               <Button
               outline
@@ -286,6 +288,7 @@ export default class ShipFilter extends React.Component {
         { this.state.showNation &&
         <Row>
           <Col>
+          <Row><Col>feel free to filter by nation as well</Col></Row>
             <ButtonGroup>
               <Button
               outline
@@ -311,12 +314,9 @@ export default class ShipFilter extends React.Component {
           key={"0qualityshipListFilter"}
           onClick={(e) => this.handleFilterChange(e, "prefill")}
           value={"prefill"}>
-          {"All 0"}
+          {"Reset All"}
           </Button>
-            <ButtonGroup>
-            on sale
-              {this.buildButtonGrp("is_premium")}
-            </ButtonGroup>
+
           </Col>
         </Row>
         }
