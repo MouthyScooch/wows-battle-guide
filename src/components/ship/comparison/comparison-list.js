@@ -32,6 +32,7 @@ export default class ComparisonList extends React.Component {
                   <th>Tier</th>
                   <th>Name</th>
                   <th>caliber</th>
+                  <th>bow aromor</th>
                 </tr>
               </thead>
               <tbody>
@@ -47,6 +48,7 @@ export default class ComparisonList extends React.Component {
                           ) : (
                             <td>{ship.nation}</td>
                           )}
+                        <td>{ship.bowArmor}</td>
                         <UncontrolledTooltip placement="right" target={"tooltip" + ship.ship_id_str}>
                           {ship.description}
                         </UncontrolledTooltip>

@@ -30,7 +30,8 @@ export default class Ship extends React.Component {
     return (
       <div>
         <div className="content">
-                <div>{this.state.selectedShip.name}</div>
+                <div>{this.state.selectedShip.name}, cal:{this.state.selectedShip.artillery.name.slice(0, 3)}mm, bow aromor:{this.state.selectedShip.bowArmor}mm</div>
+                <div>HE pen:, IFHE pen:, Overmatch:</div>
                 <img src={this.state.selectedShip.images.large} className="App-logo" alt="logo" />
                 <ComparisonList shipList={this.props.shipList} selectedShip={this.state.selectedShip}/>
 
