@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var artillarySchema = new Schema({
+var artillerySchema = new Schema({
   profile: {
       artillery: {
           rotation_time: Number,
@@ -19,8 +19,8 @@ var artillarySchema = new Schema({
   price_credit: Number
 });
 
-var Artillary = mongoose.model('Artillary', artillarySchema);
-module.exports = Artillary;
+var Artillery = mongoose.model('Artillery', artillerySchema);
+module.exports = Artillery;
 
 // default_profile: {engine: {…}, torpedo_bomber: null, anti_aircraft: {…}, mobility: {…}, hull: {…}, …}
 // description: "This ship is a copy of ZAO and is suitable for Clan Battles only"

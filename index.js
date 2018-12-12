@@ -34,15 +34,15 @@ app.get('/api/ships', function (req, res) {
     });
 });
 
-app.get('/api/artillaryModules', function (req, res) {
-  console.log("get artillary from mongo db");
-  db
+app.get('/api/artilleryModules', function (req, res) {
+  console.log("get artillery from mongo db");
+  dba
     .find({})
-    .exec(function(err, artillary){
-      if (err || !artillary || !artillary.length) {
-        return res.status(404).send({message: 'Ships not found.'});
+    .exec(function(err, artillery){
+      if (err || !artillery || !artillery.length) {
+        return res.status(404).send({message: 'Artillary not found.'});
       }
-      res.send(artillary);
+      res.send(artillery);
     });
 });
 
@@ -102,9 +102,9 @@ app.get('/api/updateShips', function (req, res) {
 });
 
 app.get('/api/updateArtillaryModules', function (req, res) {
-  console.log("get artillary modules pinged");
-  //need to finish updating terminology from ship to artillary module
-  let artillaryStore = [];
+  console.log("get artillery modules pinged");
+  //need to finish updating terminology from ship to artillery module
+  let artilleryStore = [];
   let pageCount = 1;
 
   axios.get('https://api.worldofwarships.com/wows/encyclopedia/modules/?application_id=' + process.env.REACT_APP_WG_KEY + '&type=Artillery&page_no=1')
@@ -116,12 +116,12 @@ app.get('/api/updateArtillaryModules', function (req, res) {
         });
       }
       return convertObjectToArray(resJson.data.data);
-    }).then((artillaryList) => {
-      artillaryStore = artillaryStore.concat(artillaryList);
-      if (artillaryList.length < 100) {
-        console.log("sending artillary");
-        res.send(artillaryStore);
-        createArtillary(artillaryStore);
+    }).then((artilleryList) => {
+      artilleryStore = artilleryStore.concat(artilleryList);
+      if (artilleryList.length < 100) {
+        console.log("sending artillery");
+        res.send(artilleryStore);
+        createArtillary(artilleryStore);
       } else {
         pageCount++;
         getNextPage(pageCount);
@@ -140,12 +140,12 @@ app.get('/api/updateArtillaryModules', function (req, res) {
             });
           }
           return convertObjectToArray(resJson.data.data);
-        }).then((artillaryList) => {
-          artillaryStore = artillaryStore.concat(artillaryList);
-          if (artillaryList.length < 100) {
-            console.log("sending artillary");
-            createArtillary(artillaryStore);
-            res.send(artillaryStore);
+        }).then((artilleryList) => {
+          artilleryStore = artilleryStore.concat(artilleryList);
+          if (artilleryList.length < 100) {
+            console.log("sending artillery");
+            createArtillary(artilleryStore);
+            res.send(artilleryStore);
           } else {
             pageCount++;
             getNextPage(pageCount);
@@ -158,7 +158,7 @@ app.get('/api/updateArtillaryModules', function (req, res) {
 });
 
 var db = require('./models/ship');
-var dba = require('./models/artillary');
+var dba = require('./models/artillery');
     // Ship = db.Ship;
 
 function index(req, res) {
@@ -189,16 +189,16 @@ console.log("ships list", db.Ship, "ships list");
 });
 }
 
-function createArtillary(artillary_list) {
-dba.remove({}, function(err, artillary){
+function createArtillary(artillery_list) {
+dba.remove({}, function(err, artillery){
   if(err) {
-    console.log('Error occurred in artillary remove', err);
+    console.log('Error occurred in artillery remove', err);
   } else {
-    console.log('removed all artillary');
-console.log("artillary list", artillary_list, "artillary list");
-    dba.create(artillary_list, function(err, artillary){
+    console.log('removed all artillery');
+console.log("artillery list", artillery_list, "artillery list");
+    dba.create(artillery_list, function(err, artillery){
       if (err) { return console.log('err', err); }
-      console.log("created", artillary.length, "artillary");
+      console.log("created", artillery.length, "artillery");
       // process.exit();
     });
   }

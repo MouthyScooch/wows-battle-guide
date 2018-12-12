@@ -12,6 +12,7 @@ export default class Title extends React.Component {
     this.state = {
       selectedShip: "",
       showShipsList: false,
+      artilleryList: [],
       shipList: [
         { tier: 10, type: "Destroyer"},
         { tier: 9, type: "Battleship"},
@@ -56,6 +57,7 @@ export default class Title extends React.Component {
     })
     .then((resJson) => {
       console.log("fetchShips response", resJson);
+      this.fetchArtillary();
       this.setState({
         shipList: resJson,
         filteredShips: resJson
@@ -72,6 +74,39 @@ export default class Title extends React.Component {
     .catch((err) => {
       console.log('Fetch Error', err);
     })
+  }
+
+  fetchArtillary() {
+    fetch('/api/artilleryModules')
+    .then((responsess) => {
+
+      return responsess.json();
+    })
+    .then((resJsonss) => {
+      console.log("fetchArtillary response", resJsonss);
+      this.setState({
+        artilleryList: resJsonss
+      }, () => {
+        console.log("final setState artilleryData loaded from fetch artillery", this.state.artilleryList);
+        this.assignArtillary(); // see notes at function
+      });
+    })
+    .catch((err) => {
+      console.log('Fetch Error', err);
+    })
+  }
+
+  assignArtillary() {
+    //this will be updated on the backend and eventually an embedded database. this is all in preparation for expansion
+    var arr = this.state.shipList;
+    var arra = this.state.artilleryList;
+
+    arr.forEach(function (e) {
+      var arrtillary = arra.find(function (ea) {
+        return ea.module_id == e.default_profile.artillery.artillery_id
+      });
+
+    });
   }
 
   filterShips(filter) {
