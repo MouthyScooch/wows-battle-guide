@@ -56,7 +56,6 @@ export default class Title extends React.Component {
       return response.json();
     })
     .then((resJson) => {
-      console.log("fetchShips response", resJson);
       this.fetchArtillary();
       this.setState({
         shipList: resJson,
@@ -78,16 +77,13 @@ export default class Title extends React.Component {
 
   fetchArtillary() {
     fetch('/api/artilleryModules')
-    .then((responsess) => {
-
-      return responsess.json();
+    .then((response) => {
+      return response.json();
     })
-    .then((resJsonss) => {
-      console.log("fetchArtillary response", resJsonss);
+    .then((resJson) => {
       this.setState({
-        artilleryList: resJsonss
+        artilleryList: resJson
       }, () => {
-        console.log("final setState artilleryData loaded from fetch artillery", this.state.artilleryList);
         this.assignArtillary(); // see notes at function
       });
     })
@@ -102,11 +98,20 @@ export default class Title extends React.Component {
     var arra = this.state.artilleryList;
 
     arr.forEach(function (e) {
-      var arrtillary = arra.find(function (ea) {
-        return ea.module_id == e.default_profile.artillery.artillery_id
+      var artillery = arra.find(function (ea) {
+        if (e.default_profile.artillery) {
+          return ea.module_id === e.default_profile.artillery.artillery_id
+        }else{
+          return
+        }
       });
-
+      e.artillery = artillery;
     });
+    this.setState({
+      shipList: arr
+    }, () => {
+      console.log("e.artillery shipList setstate", this.state.shipList);
+    })
   }
 
   filterShips(filter) {
