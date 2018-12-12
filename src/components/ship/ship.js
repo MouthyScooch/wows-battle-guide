@@ -10,6 +10,7 @@ export default class Ship extends React.Component {
       shipList: props.shipList,
     }
     this.findShip(props);
+    console.log("ship page props", props.shipList[0]);
   }
   findShip(props) {
     let hayStack = props.shipList;
@@ -34,7 +35,7 @@ export default class Ship extends React.Component {
                 <div>{this.state.selectedShip.type}</div>
                 <div>{this.state.selectedShip.nation }</div>
                 <img src={this.state.selectedShip.images.large} className="App-logo" alt="logo" />
-                <div>{this.state.selectedShip.name}</div>
+                <div>{this.props.shipList[0].name}</div>
                 <div>{this.state.selectedShip.name}</div>
 
         </div>

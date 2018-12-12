@@ -48,10 +48,50 @@ class App extends Component {
         shipList: resJson
       }, () => {
         console.log("final setState shipsData loaded from fetch ships", this.state.shipList);
+        this.fetchArtillary();
       });
     })
     .catch((err) => {
       console.log('Fetch Error', err);
+    })
+  }
+
+  fetchArtillary() {
+    fetch('/api/artilleryModules')
+    .then((response) => {
+      return response.json();
+    })
+    .then((resJson) => {
+      this.setState({
+        artilleryList: resJson
+      }, () => {
+        this.assignArtillary(); // see notes at function
+      });
+    })
+    .catch((err) => {
+      console.log('Fetch Error', err);
+    })
+  }
+
+  assignArtillary() {
+    //this will be updated on the backend and eventually an embedded database. this is all in preparation for expansion
+    var arr = this.state.shipList;
+    var arra = this.state.artilleryList;
+
+    arr.forEach(function (e) {
+      var artillery = arra.find(function (ea) {
+        if (e.default_profile.artillery) {
+          return ea.module_id === e.default_profile.artillery.artillery_id
+        }else{
+          return
+        }
+      });
+      e.artillery = artillery;
+    });
+    this.setState({
+      shipList: arr
+    }, () => {
+      console.log("e.artillery shipList setstate", this.state.shipList);
     })
   }
 
