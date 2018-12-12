@@ -12,6 +12,7 @@ export default class Title extends React.Component {
     this.state = {
       selectedShip: "",
       showShipsList: false,
+      artilleryList: [],
       shipList: [
         { tier: 10, type: "Destroyer"},
         { tier: 9, type: "Battleship"},
@@ -49,13 +50,14 @@ export default class Title extends React.Component {
     this.filterShips = this.filterShips.bind(this);
   }
 // after redux and later larger databases are implimented, these fetch calls will be removed
+// this is redundant and needs to be updated using the App.js props
   fetchShips() {
     fetch('/api/ships')
     .then((response) => {
       return response.json();
     })
     .then((resJson) => {
-      console.log("fetchShips response", resJson);
+      this.fetchArtillary();
       this.setState({
         shipList: resJson,
         filteredShips: resJson
@@ -71,6 +73,45 @@ export default class Title extends React.Component {
     })
     .catch((err) => {
       console.log('Fetch Error', err);
+    })
+  }
+
+  fetchArtillary() {
+    fetch('/api/artilleryModules')
+    .then((response) => {
+      return response.json();
+    })
+    .then((resJson) => {
+      this.setState({
+        artilleryList: resJson
+      }, () => {
+        this.assignArtillary(); // see notes at function
+      });
+    })
+    .catch((err) => {
+      console.log('Fetch Error', err);
+    })
+  }
+
+  assignArtillary() {
+    //this will be updated on the backend and eventually an embedded database. this is all in preparation for expansion
+    var arr = this.state.shipList;
+    var arra = this.state.artilleryList;
+
+    arr.forEach(function (e) {
+      var artillery = arra.find(function (ea) {
+        if (e.default_profile.artillery) {
+          return ea.module_id === e.default_profile.artillery.artillery_id
+        }else{
+          return
+        }
+      });
+      e.artillery = artillery;
+    });
+    this.setState({
+      shipList: arr
+    }, () => {
+      console.log("e.artillery shipList setstate", this.state.shipList);
     })
   }
 
