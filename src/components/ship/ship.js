@@ -1,6 +1,8 @@
 
 import React from 'react';
 
+import ComparisonList from './comparison/comparison-list.js';
+
 export default class Ship extends React.Component {
   constructor (props) {
     super(props);
@@ -28,15 +30,9 @@ export default class Ship extends React.Component {
     return (
       <div>
         <div className="content">
-              Wows Battle Field Guide
-                Ship's Page!!!!!!!!!!!!...... this is it for now wah wah wah
                 <div>{this.state.selectedShip.name}</div>
-                <div>{this.state.selectedShip.tier}</div>
-                <div>{this.state.selectedShip.type}</div>
-                <div>{this.state.selectedShip.nation }</div>
                 <img src={this.state.selectedShip.images.large} className="App-logo" alt="logo" />
-                <div>{this.props.shipList[0].name}</div>
-                <div>{this.state.selectedShip.name}</div>
+                <ComparisonList shipList={this.props.shipList} selectedShip={this.state.selectedShip}/>
 
         </div>
       </div>
