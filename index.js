@@ -34,6 +34,18 @@ app.get('/api/ships', function (req, res) {
     });
 });
 
+app.get('/api/artillaryModules', function (req, res) {
+  console.log("get artillary from mongo db");
+  db
+    .find({})
+    .exec(function(err, artillary){
+      if (err || !artillary || !artillary.length) {
+        return res.status(404).send({message: 'Ships not found.'});
+      }
+      res.send(artillary);
+    });
+});
+
 
 app.get('/api/updateShips', function (req, res) {
   console.log("get ships pinged");
@@ -89,7 +101,64 @@ app.get('/api/updateShips', function (req, res) {
     }
 });
 
+app.get('/api/updateArtillaryModules', function (req, res) {
+  console.log("get artillary modules pinged");
+  //need to finish updating terminology from ship to artillary module
+  let artillaryStore = [];
+  let pageCount = 1;
+
+  axios.get('https://api.worldofwarships.com/wows/encyclopedia/modules/?application_id=' + process.env.REACT_APP_WG_KEY + '&type=Artillery&page_no=1')
+    .then((resJson) => {
+      console.log("axios through", resJson);
+      function convertObjectToArray(resJsonData) {
+        return Object.keys(resJsonData).map(function(k) {
+          return resJsonData[k]
+        });
+      }
+      return convertObjectToArray(resJson.data.data);
+    }).then((artillaryList) => {
+      artillaryStore = artillaryStore.concat(artillaryList);
+      if (artillaryList.length < 100) {
+        console.log("sending artillary");
+        res.send(artillaryStore);
+        createArtillary(artillaryStore);
+      } else {
+        pageCount++;
+        getNextPage(pageCount);
+      }
+    })
+    .catch((err) => {
+      console.log('Fetch Error :-S', err);
+    });
+    // refactor to pick up data from dedicated DB, GET WG API data and transpose to dedicated DB
+    function getNextPage(n) {
+      axios.get('https://api.worldofwarships.com/wows/encyclopedia/modules/?application_id=' + process.env.REACT_APP_WG_KEY + '&type=Artillery&page_no=' + n)
+        .then((resJson) => {
+          function convertObjectToArray(resJsonData) {
+            return Object.keys(resJsonData).map(function(k) {
+              return resJsonData[k]
+            });
+          }
+          return convertObjectToArray(resJson.data.data);
+        }).then((artillaryList) => {
+          artillaryStore = artillaryStore.concat(artillaryList);
+          if (artillaryList.length < 100) {
+            console.log("sending artillary");
+            createArtillary(artillaryStore);
+            res.send(artillaryStore);
+          } else {
+            pageCount++;
+            getNextPage(pageCount);
+          }
+        })
+        .catch((err) => {
+          console.log('Fetch Error :-S', err);
+        });
+    }
+});
+
 var db = require('./models/ship');
+var dba = require('./models/artillary');
     // Ship = db.Ship;
 
 function index(req, res) {
@@ -107,13 +176,29 @@ function index(req, res) {
 function createShip(ships_list) {
 db.remove({}, function(err, ships){
   if(err) {
-    console.log('Error occurred in remove', err);
+    console.log('Error occurred in ships remove', err);
   } else {
     console.log('removed all ships');
 console.log("ships list", db.Ship, "ships list");
     db.create(ships_list, function(err, ships){
       if (err) { return console.log('err', err); }
       console.log("created", ships.length, "ships");
+      // process.exit();
+    });
+  }
+});
+}
+
+function createArtillary(artillary_list) {
+dba.remove({}, function(err, artillary){
+  if(err) {
+    console.log('Error occurred in artillary remove', err);
+  } else {
+    console.log('removed all artillary');
+console.log("artillary list", artillary_list, "artillary list");
+    dba.create(artillary_list, function(err, artillary){
+      if (err) { return console.log('err', err); }
+      console.log("created", artillary.length, "artillary");
       // process.exit();
     });
   }
