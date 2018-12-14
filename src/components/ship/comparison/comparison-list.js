@@ -20,13 +20,21 @@ export default class ComparisonList extends React.Component {
     }
   }
 
+  findHEPenColor (cal, bowArmor) {
+    if (cal/6 > bowArmor) {
+      return "red"
+    }
+    return ""
+  }
+
   render() {
+    var that = this;
     return (
       <div>
         <Row>
         <Col></Col>
           <Col>
-            <Table bordered size="sm" className="table table-hover">
+            <Table bordered size="sm" className="table table-hover" responsive style={{textAlign: "left"}}>
               <thead>
                 <tr>
                   <th>Tier</th>
@@ -35,29 +43,30 @@ export default class ComparisonList extends React.Component {
                   <th>bow aromor</th>
                 </tr>
               </thead>
-              <tbody>
               {
                 this.props.shipList.map(
                   function (ship) {
+                    var cal = ship.artillery ? ship.artillery.name.slice(0, 3) : "";
+                    var selectedShipCal = that.state.selectedShip.artillery ? that.state.selectedShip.artillery.name.slice(0, 3) : "";
                     return(
-                      <tr key={ship.name + "shipTable"} id={"tooltip" + ship.ship_id_str}>
-                        <td>{ship.tier}</td>
-                        <td>{ship.name}</td>
-                        {ship.artillery ? (
-                            <td>{ship.artillery.name.slice(0, 3)}</td>
-                          ) : (
-                            <td>{ship.nation}</td>
-                          )}
-                        <td>{ship.bowArmor}</td>
-                        <UncontrolledTooltip placement="right" target={"tooltip" + ship.ship_id_str}>
-                          {ship.description}
-                        </UncontrolledTooltip>
-                      </tr>
+                      <tbody>
+
+                        <tr key={ship.name + "shipTable"} id={"tooltip" + ship.ship_id_str}>
+                          <td>{ship.tier}</td>
+                          <td>
+                            <span style={{color: that.findHEPenColor(cal, that.state.selectedShip.bowArmor)}}>{cal}</span> {ship.name} <span style={{color: that.findHEPenColor(selectedShipCal, ship.bowArmor)}}>{ship.bowArmor}</span></td>
+                          <td>{cal}</td>
+                          <td>{ship.bowArmor}</td>
+                            <UncontrolledTooltip placement="right" target={"tooltip" + ship.ship_id_str}>
+                              {ship.description}
+                            </UncontrolledTooltip>
+                        </tr>
+
+                      </tbody>
                     )
                   }
                 )
               }
-              </tbody>
             </Table>
           </Col>
           <Col></Col>
